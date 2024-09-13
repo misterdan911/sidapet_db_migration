@@ -2,7 +2,7 @@
 
 $query = [
     "TRUNCATE TABLE ref_kategori_belanja",
-    "TRUNCATE TABLE trx_belanja",
+    "TRUNCATE TABLE trx_paket",
     "TRUNCATE TABLE ref_vendor",
 ];
 

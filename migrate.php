@@ -9,5 +9,6 @@ $dbNew = $GLOBALS['db_new'];
 
 include('src/migration/reset_db_new.php');
 include('src/migration/tbl_kategori_belanja.php');
-include('src/migration/tbl_kbelanjapenyedia.php');
-include('src/migration/tbl_profile_penyedia.php');
+include('src/migration/tbl_paket.php');
+// include('src/migration/tbl_kbelanjapenyedia.php'); // harusnya masuk ke trx_vendor_penjaringan
+// include('src/migration/tbl_profile_penyedia.php');
