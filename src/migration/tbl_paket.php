@@ -27,7 +27,7 @@ while ($obj = $res->fetch_object())
     $kode_jenis_pengadaan = 0;
     $ket_lainya = 'NULL';
     $is_kualifikasi_k = 'NULL';
-    $is_kualifikasi_m = 'NULL';
+    $is_kualifikasi_m = 'TRUE';
     $is_kualifikasi_b = 'NULL';
     $ucr = 'NULL';
     $uch = 'NULL';
@@ -36,7 +36,20 @@ while ($obj = $res->fetch_object())
 
 
     $query = "INSERT INTO trx_paket (kode_paket, kode_kategori_belanja, nama_paket, kode_jenis_pengadaan, ket_lainya, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, ucr, uch, udch, udcr)
-    VALUES ($kode_paket, $kode_kategori_belanja, '$nama_paket', $kode_jenis_pengadaan, $ket_lainya, $is_kualifikasi_k, $is_kualifikasi_m, $is_kualifikasi_b, $ucr, $uch, $udch, '$udcr')";
+    VALUES (
+    $kode_paket,
+    $kode_kategori_belanja,
+    '$nama_paket',
+    $kode_jenis_pengadaan,
+    $ket_lainya,
+    $is_kualifikasi_k,
+    $is_kualifikasi_m,
+    $is_kualifikasi_b,
+    $ucr,
+    $uch,
+    $udch,
+    '$udcr')";
+    
     $resTrxPaket = $dbNew->query($query);
 
     // $row = pg_fetch_row($resTrxBelanja);

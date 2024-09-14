@@ -8,10 +8,17 @@ while ($obj = $res->fetch_object())
     $kode_kategori_belanja = $obj->id_kategori_belanja;
     $kode = $obj->kode;
     $nama = $obj->kategori_belanja;
+    $status_persetujuan = 'terima';
 
-    $query = "INSERT INTO ref_kategori_belanja (kode_kategori_belanja, kode, nama_kategori_belanja)
-    VALUES ($kode_kategori_belanja, '$kode', '$nama')";
+    $query = "INSERT INTO ref_kategori_belanja (kode_kategori_belanja, kode, nama_kategori_belanja, status_persetujuan)
+    VALUES (
+        $kode_kategori_belanja,
+        '$kode',
+        '$nama',
+        '$status_persetujuan'
+    )";
+
     $dbNew->query($query);
 
-    echo $query . "\n";
+    echo 'kategori_belanja: ' . $nama . PHP_EOL;
 }

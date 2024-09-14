@@ -21,7 +21,7 @@
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_item_tanya";
 CREATE TABLE "public"."ref_item_tanya" (
-  "kode_item" int4 NOT NULL DEFAULT nextval('ref_item_tanya_kode_item_seq'::regclass),
+  "kode_item" serial PRIMARY KEY,
   "nama_item" varchar(255) COLLATE "pg_catalog"."default",
   "keterangan" varchar(255) COLLATE "pg_catalog"."default",
   "type_data" "public"."enum_ref_item_tanya_type_data",
@@ -236,7 +236,7 @@ INSERT INTO "public"."ref_jenis_vendor" VALUES (2, 'Perorangan');
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_kategori_belanja";
 CREATE TABLE "public"."ref_kategori_belanja" (
-  "kode_kategori_belanja" int4 NOT NULL DEFAULT nextval('ref_kategori_belanja_kode_kategori_belanja_seq'::regclass),
+  "kode_kategori_belanja" serial PRIMARY KEY,
   "kode" varchar COLLATE "pg_catalog"."default",
   "nama_kategori_belanja" varchar COLLATE "pg_catalog"."default",
   "status_persetujuan" "public"."status_persetujuan",
@@ -301,7 +301,7 @@ INSERT INTO "public"."ref_kategori_belanja" VALUES (47, 'A034', 'Jasa Sewa', NUL
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_kategori_item";
 CREATE TABLE "public"."ref_kategori_item" (
-  "kode_kategori_item" int4 NOT NULL DEFAULT nextval('ref_kategori_item_kode_kategori_item_seq'::regclass),
+  "kode_kategori_item" serial PRIMARY KEY,
   "kategori_item" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
@@ -345,7 +345,7 @@ INSERT INTO "public"."ref_kategori_item" VALUES (30, 'Ketentuan Pengalaman');
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_vendor";
 CREATE TABLE "public"."ref_vendor" (
-  "kode_vendor" int4 NOT NULL DEFAULT nextval('ref_vendor_kode_vendor_seq'::regclass),
+  "kode_vendor" serial PRIMARY KEY,
   "id_user" int4,
   "kode_jenis_vendor" int4,
   "nama_perusahaan" varchar COLLATE "pg_catalog"."default",
@@ -365,7 +365,7 @@ COMMENT ON COLUMN "public"."ref_vendor"."is_tetap" IS 'menunjukan apakah vendor 
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."trx_belanja";
 CREATE TABLE "public"."trx_belanja" (
-  "kode_belanja" int4 NOT NULL DEFAULT nextval('trx_belanja_kode_belanja_seq'::regclass),
+  "kode_belanja" serial PRIMARY KEY,
   "kode_kategori_belanja" int4,
   "status_persetujuan" "public"."status_persetujuan",
   "waktu" timestamp(6),
@@ -453,7 +453,7 @@ INSERT INTO "public"."trx_belanja" VALUES (211, 21, 'terima', '2021-09-29 10:00:
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."trx_paket";
 CREATE TABLE "public"."trx_paket" (
-  "kode_paket" int4 NOT NULL DEFAULT nextval('trx_paket_kode_paket_seq'::regclass),
+  "kode_paket" serial PRIMARY KEY,
   "kode_kategori_belanja" int4,
   "nama_paket" varchar COLLATE "pg_catalog"."default",
   "kode_jenis_pengadaan" varchar COLLATE "pg_catalog"."default",

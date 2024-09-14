@@ -29,11 +29,61 @@ CREATE TABLE ref_vendor (
 COMMENT ON COLUMN ref_vendor."is_tetap" IS 'menunjukan apakah vendor sudah masuk jadi DPT atau tidak. Nilai awal nya adalah ''false''';
 
 
+
+
+
+DROP TABLE IF EXISTS ref_kategori_belanja;
 CREATE TABLE ref_kategori_belanja (
   "kode_kategori_belanja" serial PRIMARY KEY,
   "kode" varchar,
-  "nama_kategori_belanja" varchar
+  "nama_kategori_belanja" varchar,
+  "status_persetujuan" db_sidapet.status_persetujuan,
+  "id_user_persetujuan" int4,
+  "waktu" timestamp,
+  "udcr" timestamp
 );
+
+COMMENT ON COLUMN "ref_kategori_belanja"."id_user_persetujuan" IS 'User yang menerima atau menolak pengajuan kategori belanja';
+
+
+
+DROP TABLE IF EXISTS trx_paket;
+CREATE TABLE trx_paket (
+  "kode_paket" serial PRIMARY KEY,
+  "id_user" int4,
+  "kode_cabang" int4,
+  "kode_kategori_belanja" int4,
+  "nama_paket" varchar,
+  "kode_jenis_pengadaan" int2,
+  "ket_lainya" varchar,
+  "is_kualifikasi_k" bool,
+  "is_kualifikasi_m" bool,
+  "is_kualifikasi_b" bool,
+  "id_user_persetujuan" int4,
+  "status_persetujuan" status_persetujuan,
+  "alasan_ditolak" varchar,
+  "ucr" varchar,
+  "uch" varchar,
+  "udch" timestamp,
+  "udcr" timestamp
+);
+
+COMMENT ON COLUMN "trx_paket"."ket_lainya" IS 'Kalau dipilih jenis pengadaan ''Lainya'' ini harus diisi';
+
+
+DROP TABLE IF EXISTS ref_cabang_ut;
+CREATE TABLE ref_cabang_ut (
+  "kode_cabang_ut" serial PRIMARY KEY,
+  "kode_ppk" int,
+  "upbjj_ut" varchar,
+  "cabang_ut" varchar,
+  "alamat_ut" text,
+  "website" varchar
+);
+
+
+
+
 
 DROP TABLE IF EXISTS ref_kategori_item;
 CREATE TABLE ref_kategori_item (
