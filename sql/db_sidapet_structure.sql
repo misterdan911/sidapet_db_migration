@@ -2,10 +2,33 @@
 DROP TABLE IF EXISTS ref_vendor;
 DROP TABLE IF EXISTS ref_jenis_vendor;
 DROP TABLE IF EXISTS ref_kategori_belanja;
-
 DROP TABLE IF EXISTS ref_item_tanya;
+
 DROP TYPE IF EXISTS enum_ref_item_tanya_type_data;
 DROP TYPE IF EXISTS enum_ref_item_tanya_jenis_item;
+DROP TYPE IF EXISTS metode_penjaringan;
+DROP TYPE IF EXISTS status_persetujuan;
+
+CREATE TYPE enum_ref_item_tanya_type_data AS ENUM (
+    'text',
+    'file',
+    'angka'
+);
+CREATE TYPE enum_ref_item_tanya_jenis_item AS ENUM (
+    'default',
+    'custom'
+);
+CREATE TYPE status_persetujuan AS ENUM (
+	'belum_diproses',
+	'proses',
+	'terima',
+	'tolak'
+);
+CREATE TYPE metode_penjaringan AS ENUM (
+  'pengumuman',
+  'undangan'
+);
+
 
 
 CREATE TABLE ref_jenis_vendor (
@@ -51,7 +74,7 @@ DROP TABLE IF EXISTS trx_paket;
 CREATE TABLE trx_paket (
   "kode_paket" serial PRIMARY KEY,
   "id_user" int4,
-  "kode_cabang" int4,
+  "kode_cabang_ut" int4,
   "kode_kategori_belanja" int4,
   "nama_paket" varchar,
   "kode_jenis_pengadaan" int2,
@@ -59,9 +82,6 @@ CREATE TABLE trx_paket (
   "is_kualifikasi_k" bool,
   "is_kualifikasi_m" bool,
   "is_kualifikasi_b" bool,
-  "id_user_persetujuan" int4,
-  "status_persetujuan" status_persetujuan,
-  "alasan_ditolak" varchar,
   "ucr" varchar,
   "uch" varchar,
   "udch" timestamp,
@@ -69,6 +89,26 @@ CREATE TABLE trx_paket (
 );
 
 COMMENT ON COLUMN "trx_paket"."ket_lainya" IS 'Kalau dipilih jenis pengadaan ''Lainya'' ini harus diisi';
+
+
+DROP TABLE IF EXISTS trx_penjaringan;
+CREATE TABLE trx_penjaringan (
+  "kode_penjaringan" serial PRIMARY KEY,
+  "kode_paket" int4,
+  "nama_penjaringan" varchar,
+  "metode" metode_penjaringan,
+  "status_persetujuan" status_persetujuan,
+  "id_user_persetujuan" int4,
+  "alasan_ditolak" varchar,
+  "daftar_awal" timestamp,
+  "daftar_akhir" timestamp,
+  "evaluasi_awal" timestamp,
+  "evaluasi_akhir" timestamp,
+  "pengumuman" timestamp,
+  "s_tugas_dibuat" bool,
+  "udcr" timestamp
+);
+
 
 
 DROP TABLE IF EXISTS ref_cabang_ut;
@@ -82,6 +122,18 @@ CREATE TABLE ref_cabang_ut (
 );
 
 
+DROP TABLE IF EXISTS ref_ppk;
+CREATE TABLE ref_ppk (
+  "kode_ppk" serial PRIMARY KEY,
+  "id_user" int4,
+  "nama_anggota" varchar,
+  "nip_ppk" int8,
+  "uraian_jabatan" varchar,
+  "id_cn" varchar,
+  "kode_unit" varchar,
+  "nomor_ppkualitas" varchar,
+  "aktif_ppk" varchar
+);
 
 
 
@@ -92,16 +144,6 @@ CREATE TABLE ref_kategori_item (
 );
 
 
-CREATE TYPE enum_ref_item_tanya_type_data AS ENUM (
-    'text',
-    'file',
-    'angka'
-);
-
-CREATE TYPE enum_ref_item_tanya_jenis_item AS ENUM (
-    'default',
-    'custom'
-);
 
 
 CREATE TABLE ref_item_tanya (
@@ -117,4 +159,27 @@ CREATE TABLE ref_item_tanya (
   "uch" varchar(255),
   "udcr" timestamptz(6),
   "udch" timestamptz(6)
+);
+
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users  (
+  "id" serial PRIMARY KEY,
+  "name" varchar,
+  "id_level" int,
+  "email" varchar(100),
+  "email_real" varchar(100),
+  "password" varchar(255),
+  "is_ppk" int,
+  "is_pp" int,
+  "is_pkualitas" int,
+  "is_tutor" varchar(1),
+  "undang" int,
+  "internasional" int,
+  "remember_token" varchar(100),
+  "created_at" timestamp,
+  "updated_at" timestamp,
+  "email_verified_at" timestamp,
+  "andro_user" varchar(255),
+  "andro_password" varchar(255)
 );

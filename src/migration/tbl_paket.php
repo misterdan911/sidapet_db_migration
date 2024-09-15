@@ -7,24 +7,45 @@ while ($obj = $res->fetch_object())
 {
     // $kode_belanja = $obj->id_kbelanja;
     $kode_paket = $obj->id_paket;
+    $kode_cabang_ut = $obj->id_cabang;
+
+    $qCabang = "
+    SELECT
+        users.ID AS user_id,
+        cabang_ut 
+     FROM
+        ref_cabang_ut AS rc
+        LEFT JOIN ref_ppk ON rc.kode_ppk = ref_ppk.kode_ppk
+        LEFT JOIN users ON ref_ppk.id_user = users.id 
+     WHERE
+        kode_cabang_ut = $kode_cabang_ut
+    ";
+    $resCabang = $dbNew->query($qCabang);
+    $objCabang = pg_fetch_object($resCabang);
+
+    $id_user = $objCabang->user_id;
+    empty($id_user) ? $id_user = 'NULL' : $id_user;
+
     $kode_kategori_belanja = $obj->id_kategori_belanja;
     $nama_paket = $obj->nama_paket;
     $kode_jenis_pengadaan = 0;
     
+    /*
     $status_persetujuan =  $obj->status;
     if ($status_persetujuan == 1) {
-        $status_persetujuan = 'tolak';
+        $status_persetujuan = "'tolak'";
     }
     if ($status_persetujuan == 2) {
-        $status_persetujuan = 'terima';
+        $status_persetujuan = "'terima'";
     }
+    */
 
     $waktu =  $obj->tgl_daftar_awal;
     if ($waktu == '') {
         $waktu = null;
     }
 
-    $kode_jenis_pengadaan = 0;
+    $kode_jenis_pengadaan = 'NULL';
     $ket_lainya = 'NULL';
     $is_kualifikasi_k = 'NULL';
     $is_kualifikasi_m = 'TRUE';
@@ -35,9 +56,11 @@ while ($obj = $res->fetch_object())
     $udcr = $obj->created_at;
 
 
-    $query = "INSERT INTO trx_paket (kode_paket, kode_kategori_belanja, nama_paket, kode_jenis_pengadaan, ket_lainya, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, ucr, uch, udch, udcr)
+    $query = "INSERT INTO trx_paket (kode_paket, id_user, kode_cabang_ut, kode_kategori_belanja, nama_paket, kode_jenis_pengadaan, ket_lainya, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, ucr, uch, udch, udcr)
     VALUES (
     $kode_paket,
+    $id_user,
+    $kode_cabang_ut,
     $kode_kategori_belanja,
     '$nama_paket',
     $kode_jenis_pengadaan,

@@ -42,10 +42,9 @@ class DB_NEW
         return $res;
     }
 
-    /*
-    public function real_escape_string($string)
+    public function escape_string($string)
     {
-        return $this->db->real_escape_string($string);
+        if (empty($string)) return null;
+        return pg_escape_string($this->db, $string);
     }
-    */
 }
