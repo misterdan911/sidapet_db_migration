@@ -29,16 +29,6 @@ while ($obj = $res->fetch_object())
     $kode_kategori_belanja = $obj->id_kategori_belanja;
     $nama_paket = $obj->nama_paket;
     $kode_jenis_pengadaan = 0;
-    
-    /*
-    $status_persetujuan =  $obj->status;
-    if ($status_persetujuan == 1) {
-        $status_persetujuan = "'tolak'";
-    }
-    if ($status_persetujuan == 2) {
-        $status_persetujuan = "'terima'";
-    }
-    */
 
     $waktu =  $obj->tgl_daftar_awal;
     if ($waktu == '') {
@@ -75,21 +65,68 @@ while ($obj = $res->fetch_object())
     
     $resTrxPaket = $dbNew->query($query);
 
+    echo 'trx_paket.nama_paket:' . $nama_paket . PHP_EOL;
+
     // $row = pg_fetch_row($resTrxBelanja);
     // $new_id = $row['0'];
 
-    // echo 'trx_belanja.kode_kategori_belanja:' . $kode_kategori_belanja . PHP_EOL;
-    echo 'trx_paket.nama_paket:' . $nama_paket . PHP_EOL;
+    $nama_penjaringan = "Penjaringan" . " " . $nama_paket;
+    $metode = strtolower($obj->metode);
 
-    // insert ke tabel trx_paket
+    $status_persetujuan =  $obj->status;
+    if ($status_persetujuan == 1) {
+        $status_persetujuan = "'tolak'";
+    }
+    if ($status_persetujuan == 2) {
+        $status_persetujuan = "'terima'";
+    }
 
+    $id_user_persetujuan = 'NULL';
+    $alasan_ditolak = 'NULL';
 
-    // $query = "INSERT INTO trx_paket (kode_belanja)
-    // VALUES ($kode_kategori_belanja, '$status_persetujuan', '$waktu')";
-    // $dbNew->query($query);
+    $tgl_daftar_awal = parseDateTime($obj->tgl_daftar_awal);
+    $tgl_daftar_akhir = parseDateTime($obj->tgl_daftar_akhir);
+    $tgl_eval_awal = parseDateTime($obj->tgl_eval_awal);
+    $tgl_eval_akhir = parseDateTime($obj->tgl_eval_akhir);
+    $tgl_umum_paket = parseDateTime($obj->tgl_umum_paket);
 
-    // echo 'trx_belanja.kode_kategori_belanja:' . $kode_kategori_belanja . PHP_EOL;
+    $s_tugas_dibuat = 'TRUE';
+    $udcr = $obj->created_at;
 
+    $sqlInsertPenjr = "INSERT INTO trx_penjaringan (
+        kode_paket,
+        nama_penjaringan,
+        metode,
+        status_persetujuan,
+        id_user_persetujuan,
+        alasan_ditolak,
+        tgl_daftar_awal,
+        tgl_daftar_akhir,
+        tgl_eval_awal,
+        tgl_eval_akhir,
+        tgl_umum_paket,
+        s_tugas_dibuat,
+        udcr
+    ) VALUES (
+        $kode_paket,
+        '$nama_penjaringan',
+        '$metode',
+        $status_persetujuan,
+        $id_user_persetujuan,
+        $alasan_ditolak,
+        $tgl_daftar_awal,
+        $tgl_daftar_akhir,
+        $tgl_eval_awal,
+        $tgl_eval_akhir,
+        $tgl_umum_paket,
+        $s_tugas_dibuat,
+        '$udcr'
+    )";
 
+    $resInsertPenjr = $dbNew->query($sqlInsertPenjr);
+
+    echo 'nama_penjaringan:' . $nama_penjaringan . PHP_EOL;
 
 }
+
+

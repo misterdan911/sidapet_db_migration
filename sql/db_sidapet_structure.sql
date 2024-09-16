@@ -100,11 +100,11 @@ CREATE TABLE trx_penjaringan (
   "status_persetujuan" status_persetujuan,
   "id_user_persetujuan" int4,
   "alasan_ditolak" varchar,
-  "daftar_awal" timestamp,
-  "daftar_akhir" timestamp,
-  "evaluasi_awal" timestamp,
-  "evaluasi_akhir" timestamp,
-  "pengumuman" timestamp,
+  "tgl_daftar_awal" timestamp,
+  "tgl_daftar_akhir" timestamp,
+  "tgl_eval_awal" timestamp,
+  "tgl_eval_akhir" timestamp,
+  "tgl_umum_paket" timestamp,
   "s_tugas_dibuat" bool,
   "udcr" timestamp
 );
