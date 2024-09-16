@@ -109,6 +109,14 @@ CREATE TABLE trx_penjaringan (
   "udcr" timestamp
 );
 
+CREATE TABLE trx_undangan_penjr (
+  "kode_und_penjr" serial PRIMARY KEY,
+  "kode_penjaringan" int4,
+  "nama" varchar,
+  "email" varchar,
+  "token" varchar
+);
+
 
 
 DROP TABLE IF EXISTS ref_cabang_ut;

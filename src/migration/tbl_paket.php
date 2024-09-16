@@ -121,11 +121,42 @@ while ($obj = $res->fetch_object())
         $tgl_umum_paket,
         $s_tugas_dibuat,
         '$udcr'
-    )";
+    ) RETURNING kode_penjaringan";
 
     $resInsertPenjr = $dbNew->query($sqlInsertPenjr);
 
     echo 'nama_penjaringan:' . $nama_penjaringan . PHP_EOL;
+
+    $rowInsertPenjr = pg_fetch_row($resInsertPenjr);
+    $kode_penjaringan = $rowInsertPenjr['0'];
+
+
+    $sqlTblPaketUndang = "SELECT * FROM tbl_paket_undang WHERE id_paket = $kode_paket";
+    $resTblPaketUndang = $dbOld->query($sqlTblPaketUndang);
+
+    while ($objTblPaketUndang = $resTblPaketUndang->fetch_object())
+    {
+
+        $nama = 'NULL';
+        $email = $objTblPaketUndang->email;
+        $token = 'NULL';
+
+        $sqlUndanganPenjr = "INSERT INTO trx_undangan_penjr (
+            kode_penjaringan,
+            nama,
+            email,
+            token
+        ) VALUES (
+            $kode_penjaringan,
+            $nama,
+            '$email',
+            $token
+        )";
+
+        $dbNew->query($sqlUndanganPenjr);
+
+        echo 'email undangan: ' . $email . PHP_EOL;
+    }
 
 }
 
