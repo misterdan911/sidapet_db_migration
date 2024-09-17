@@ -36,17 +36,17 @@ CREATE TABLE ref_jenis_vendor (
   "jenis_vendor" varchar(10)
 );
 
+
+DROP TABLE IF EXISTS ref_vendor;
 CREATE TABLE ref_vendor (
   "kode_vendor" serial PRIMARY KEY,
   "id_user" int,
   "kode_jenis_vendor" int,
   "nama_perusahaan" varchar,
   "email" varchar,
+  "kode_domisili" int,
   "swafoto" varchar,
-  "is_tetap" bool,
-  CONSTRAINT fk_jenis_vendor
-      FOREIGN KEY(kode_jenis_vendor) 
-        REFERENCES ref_jenis_vendor(kode_jenis_vendor)
+  "is_tetap" bool
 );
 
 COMMENT ON COLUMN ref_vendor."is_tetap" IS 'menunjukan apakah vendor sudah masuk jadi DPT atau tidak. Nilai awal nya adalah ''false''';
@@ -82,6 +82,8 @@ CREATE TABLE trx_paket (
   "is_kualifikasi_k" bool,
   "is_kualifikasi_m" bool,
   "is_kualifikasi_b" bool,
+  "is_pembuka" bool,
+  "teks_pembuka" text,
   "ucr" varchar,
   "uch" varchar,
   "udch" timestamp,

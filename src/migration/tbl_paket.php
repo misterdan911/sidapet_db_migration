@@ -40,13 +40,15 @@ while ($obj = $res->fetch_object())
     $is_kualifikasi_k = 'NULL';
     $is_kualifikasi_m = 'TRUE';
     $is_kualifikasi_b = 'NULL';
+    $is_pembuka = 'FALSE';
+    $teks_pembuka = 'FALSE';
     $ucr = 'NULL';
     $uch = 'NULL';
     $udch = 'NULL';
     $udcr = $obj->created_at;
 
 
-    $query = "INSERT INTO trx_paket (kode_paket, id_user, kode_cabang_ut, kode_kategori_belanja, nama_paket, kode_jenis_pengadaan, ket_lainya, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, ucr, uch, udch, udcr)
+    $query = "INSERT INTO trx_paket (kode_paket, id_user, kode_cabang_ut, kode_kategori_belanja, nama_paket, kode_jenis_pengadaan, ket_lainya, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, is_pembuka, teks_pembuka, ucr, uch, udch, udcr)
     VALUES (
     $kode_paket,
     $id_user,
@@ -58,6 +60,8 @@ while ($obj = $res->fetch_object())
     $is_kualifikasi_k,
     $is_kualifikasi_m,
     $is_kualifikasi_b,
+    $is_pembuka,
+    $teks_pembuka,
     $ucr,
     $uch,
     $udch,
