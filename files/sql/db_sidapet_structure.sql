@@ -263,7 +263,7 @@ CREATE TABLE ref_komisaris_perusahaan (
 
 DROP TABLE IF EXISTS ref_pengalaman_sekarang;
 CREATE TABLE ref_pengalaman_sekarang (
-  "kode_pengalaman" serial PRIMARY KEY,
+  "kode_pengalaman_sekarang" serial PRIMARY KEY,
   "kode_vendor" int4,
   "nm_pnglmn_sekarang" text,
   "div_pnglmn_sekarang" text,

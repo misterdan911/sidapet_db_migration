@@ -25,6 +25,13 @@ include('src/migration/tbl_profile_penyedia.php');
 // include('src/migration/tbl_komisaris_perusahaan.php');
 // include('src/migration/tbl_direksi_perusahaan.php');
 // include('src/migration/tbl_personalia_perusahaan.php');
-include('src/migration/tbl_ijin_usaha_perusahaan.php');
-
+// include('src/migration/tbl_ijin_usaha_perusahaan.php');
+// include('src/migration/tbl_pengalaman_sekarang.php');
+include('src/migration/tbl_saham_perusahaan.php');
+/*
+include('src/migration/ref_akta_perusahaan.php');
+include('src/migration/ref_pengalaman3.php');
+include('src/migration/ref_fasilitas_perusahaan.php');
+include('src/migration/ref_pengalaman10.php');
+*/
 

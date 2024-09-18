@@ -3,7 +3,7 @@
 class DB_NEW
 {
 
-    protected $db;
+    public $db;
     public $affected_rows;
 
     public function __construct()
