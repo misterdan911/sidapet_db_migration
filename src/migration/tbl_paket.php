@@ -302,7 +302,7 @@ while ($obj = $res->fetch_object())
 
 
         // migrate trx_penilaian
-        $sqlRefVendor = "SELECT kode_jenis_vendor FROM vendor WHERE kode_vendor = $kode_vendor";
+        $sqlRefVendor = "SELECT kode_jenis_vendor FROM ref_vendor WHERE kode_vendor = $kode_vendor";
         $resRefVendor = $dbNew->query($sqlRefVendor);
         $rowRefVendor = pg_fetch_row($resRefVendor);
         $kode_jenis_vendor = $rowRefVendor[0];  // 1 perusahaan, 2 perorangan
@@ -389,7 +389,18 @@ while ($obj = $res->fetch_object())
             $kode_item_penilaian = $nilai['kode_item_penilaian'];
             $nilai = $nilai['nilai'];
 
-            
+            $sInsertTrxNilai = "INSERT INTO trx_penilaian (kode_eval_vendor, id_user, kode_kelompok_item_penilaian, kode_item_penilaian, nilai)
+            VALUES (
+                $kode_eval_vendor,
+                $id_user,
+                $kode_kelompok_item_penilaian,
+                $kode_item_penilaian,
+                '$nilai'
+            )";
+
+            $resInsertTrxNilai = $dbNew->query($sInsertTrxNilai);
+
+            echo 'nilai: ' . $nilai . PHP_EOL;
 
         }
 

@@ -1,5 +1,11 @@
 <?php
 
+// Truncate ref_vendor
+$qRefVendor = "TRUNCATE TABLE ref_vendor";
+$dbNew->query($qRefVendor);
+echo $qRefVendor . PHP_EOL;
+
+
 $query = "SELECT * FROM tbl_profile_penyedia ORDER BY id_profil_penyedia ASC";
 $res = $dbOld->query($query);
 
