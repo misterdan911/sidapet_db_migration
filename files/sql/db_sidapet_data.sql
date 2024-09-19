@@ -201,3 +201,25 @@ INSERT INTO ref_item_tanya VALUES (31, 'Nama Bank', NULL, 'text', 2, 'default', 
 INSERT INTO ref_item_tanya VALUES (55, 'Nama Lengkap', NULL, 'text', 11, 'default', 3, 1, NULL, NULL, '2024-06-27 13:31:52.868+07', '2024-06-27 13:31:52.868+07');
 INSERT INTO ref_item_tanya VALUES (77, 'Tanggal Lahir', NULL, 'text', 22, 'default', 4, 1, NULL, NULL, '2024-06-27 13:31:52.914+07', '2024-06-27 13:31:52.914+07');
 INSERT INTO ref_item_tanya VALUES (90, 'Lokasi Sekarang', NULL, 'text', 24, 'default', 4, 1, NULL, NULL, '2024-06-27 13:31:52.937+07', '2024-06-27 13:31:52.937+07');
+
+
+INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (1, 'Data Diri');
+INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (2, 'Administrasi');
+INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (3, 'Teknis');
+INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (4, 'Keuangan');
+
+
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (1, 1, 'Data Diri', 't', 't');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (2, 2, 'Administrasi', 'f', 't');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (3, 2, 'Landasan Hukum Pendirian Badan Usaha', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (4, 2, 'Pengurus Badan Usaha', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (5, 2, 'Izin Usaha dan Tanda Daftar Perusahaan', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (6, 2, 'Susunan Kepemilikan Saham / Persero', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (7, 2, 'Data Keuangan', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (8, 3, 'Teknis', 'f', 't');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (9, 3, 'Data Personalia', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (10, 3, 'Data Fasilitas/Peralatan/Perlengkapan', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (11, 3, 'Pengalaman dalam kurun waktu 10 tahun', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (12, 3, 'Pengalaman dalam kurun waktu 3 tahun', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (13, 3, 'Pekerjaan yang sedang dikerjakan', 't', 'f');
+INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (14, 4, 'Keuangan', 't', 'f');

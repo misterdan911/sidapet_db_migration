@@ -15,6 +15,11 @@ $qTrxVendorPjr = "TRUNCATE TABLE trx_vendor_penjr";
 $dbNew->query($qTrxVendorPjr);
 echo $qTrxVendorPjr . PHP_EOL;
 
+// Truncate trx_vendor_penjr
+$qTrxEvalVendor = "TRUNCATE TABLE trx_eval_vendor";
+$dbNew->query($qTrxEvalVendor);
+echo $qTrxEvalVendor . PHP_EOL;
+
 
 
 $query = "SELECT * FROM tbl_paket ORDER BY id_paket ASC";
@@ -184,6 +189,8 @@ while ($obj = $res->fetch_object())
     $qTblVerPaket = "SELECT * FROM tbl_verif_paket WHERE id_paket = $kode_paket ORDER BY id_verif_paket ASC";
     $resTblVerPaket = $dbOld->query($qTblVerPaket);
 
+    $arrVerif = [];
+
     while ($objTblVerPaket = $resTblVerPaket->fetch_object())
     {
         $kode_verifikator_penjr = $objTblVerPaket->id_verif_paket;
@@ -202,6 +209,8 @@ while ($obj = $res->fetch_object())
         $dbNew->query($qTrxVerPjr);
 
         echo 'verifikator_ditunjuk: ' . $id_user . PHP_EOL;
+
+        $arrVerif[] = $id_user;
     }
 
 
@@ -252,11 +261,132 @@ while ($obj = $res->fetch_object())
             $nilai_total,
             $is_terpilih,
             $alasan_tidak_terpilih
-        )";
+        ) RETURNING kode_vendor_penjr";
 
-        $dbNew->query($qTrxVendorPjr);
+        $resTrxVendorPjr = $dbNew->query($qTrxVendorPjr);
 
-        echo 'verifikator_ditunjuk: ' . $id_user . PHP_EOL;
+        echo 'vendor: ' . $kode_vendor . ' ikut penjaringan: ' . $kode_penjaringan . PHP_EOL;
+
+        $rowTrxVendorPjr = pg_fetch_row($resTrxVendorPjr);
+
+
+        // migrate trx_eval_vendor
+        $kode_vendor_penjr = $rowTrxVendorPjr['0'];
+        $id_user = $arrVerif[0];
+        $scan_visitasi_datadiri = 'NULL';
+        $scan_visitasi_administrasi = 'NULL';
+        $scan_visitasi_teknis = 'NULL';
+        $scan_visitasi_keuangan = 'NULL';
+        $is_terima = $is_terpilih;
+        $alasan_tolak = 'NULL';
+
+        $qTrxEvalVendor = "INSERT INTO trx_eval_vendor (kode_vendor_penjr, id_user, scan_visitasi_datadiri, scan_visitasi_administrasi, scan_visitasi_teknis, scan_visitasi_keuangan, is_terima, alasan_tolak)
+        VALUES (
+            $kode_vendor_penjr,
+            $id_user,
+            $scan_visitasi_datadiri,
+            $scan_visitasi_administrasi,
+            $scan_visitasi_teknis,
+            $scan_visitasi_keuangan,
+            $is_terima,
+            $alasan_tolak
+        ) RETURNING kode_eval_vendor";
+
+        $resTrxEvalVendor = $dbNew->query($qTrxEvalVendor);
+
+        echo 'yang memverifikasi: ' . $id_user . PHP_EOL;
+
+        $rowTrxEvalVendor = pg_fetch_row($resTrxEvalVendor);
+
+
+
+
+        /*
+        // migrate trx_penilaian
+        if (($objTblVerif->org_pengalaman == 1) && ($objTblVerif->org_sertifikat == 1)) {
+            $nilai_teknis = 'sesuai';
+        }
+        elseif (empty($objTblVerif->org_pengalaman) && empty($objTblVerif->org_sertifikat)) {
+            $nilai_teknis = null;
+        }
+
+        $arrNilai = [
+            'org_data_pribadi' => [
+                'kode_kelompok_item_penilaian' => 1,
+                'kode_item_penilaian' => 1,
+                'nilai' => $objTblVerif->org_data_pribadi
+            ],
+            'org_npwp_pribadi' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->org_npwp_pribadi
+            ],
+            'nilai_teknis' => [
+                'kode_kelompok_item_penilaian' => 3,
+                'kode_item_penilaian' => 8,
+                'nilai' => $nilai_teknis
+            ],
+            'perus_landasan_hukum' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_landasan_hukum
+            ],
+            'perus_pengurus' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_pengurus
+            ],
+            'perus_izin_usaha' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_izin_usaha
+            ],
+            'perus_data_keuangan' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_data_keuangan
+            ],
+            'perus_personalia' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_personalia
+            ],
+            'perus_fasilitas' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_fasilitas
+            ],
+            'perus_pengalaman' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_pengalaman
+            ],
+            'perus_lap_keuangan' => [
+                'kode_kelompok_item_penilaian' => 2,
+                'kode_item_penilaian' => 2,
+                'nilai' => $objTblVerif->perus_lap_keuangan
+            ],
+        ];
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        $kode_eval_vendor = $rowTrxEvalVendor[0];
+        $id_user = $id_user;
+        $kode_kelompok_item_penilaian = 
+        $kode_item_penilaian = 
+        $nilai =   
+        */      
+        
     }
 
 

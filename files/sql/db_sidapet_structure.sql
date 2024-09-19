@@ -360,6 +360,45 @@ CREATE TABLE trx_vendor_penjr (
   "alasan_tidak_terpilih" varchar
 );
 
+DROP TABLE IF EXISTS trx_eval_vendor;
+CREATE TABLE trx_eval_vendor (
+  "kode_eval_vendor" serial PRIMARY KEY,
+  "kode_vendor_penjr" int,
+  "id_user" int,
+  "scan_visitasi_datadiri" varchar,
+  "scan_visitasi_administrasi" varchar,
+  "scan_visitasi_teknis" varchar,
+  "scan_visitasi_keuangan" varchar,
+  "is_terima" bool,
+  "alasan_tolak" varchar
+);
+
+DROP TABLE IF EXISTS ref_kelompok_item_penilaian;
+CREATE TABLE ref_kelompok_item_penilaian (
+  "kode_kelompok_item_penilaian" int2 PRIMARY KEY,
+  "nama_kelompok" varchar
+);
+
+DROP TABLE IF EXISTS ref_item_penilaian;
+CREATE TABLE ref_item_penilaian (
+  "kode_item_penilaian" int2 PRIMARY KEY,
+  "kode_kelompok_item_penilaian" int2,
+  "nama_item" varchar,
+  "perusahaan" bool,
+  "perorangan" bool
+);
+
+DROP TABLE IF EXISTS trx_penilaian;
+CREATE TABLE trx_penilaian (
+  "kode_penilaian" serial PRIMARY KEY,
+  "kode_eval_vendor" int4,
+  "id_user" int4,
+  "kode_kelompok_item_penilaian" int2,
+  "kode_item_penilaian" int2,
+  "nilai" varchar
+);
+
+
 
 
 
