@@ -1,7 +1,20 @@
 <?php
 
+// Truncate trx_paket
+$qTrxPaket = "TRUNCATE TABLE trx_paket";
+$dbNew->query($qTrxPaket);
+echo $qTrxPaket . PHP_EOL;
+
+// Truncate trx_verifikator_penjr
+$qTrxVerPjr = "TRUNCATE TABLE trx_verifikator_penjr";
+$dbNew->query($qTrxVerPjr);
+echo $qTrxVerPjr . PHP_EOL;
+
+
+
 $query = "SELECT * FROM tbl_paket ORDER BY id_paket ASC";
 $res = $dbOld->query($query);
+
 
 while ($obj = $res->fetch_object())
 {
@@ -140,7 +153,6 @@ while ($obj = $res->fetch_object())
 
     while ($objTblPaketUndang = $resTblPaketUndang->fetch_object())
     {
-
         $nama = 'NULL';
         $email = $objTblPaketUndang->email;
         $token = 'NULL';
@@ -161,6 +173,32 @@ while ($obj = $res->fetch_object())
 
         echo 'email undangan: ' . $email . PHP_EOL;
     }
+
+
+    // migrate trx_verifikator_penjr
+    $qTblVerPaket = "SELECT * FROM tbl_verif_paket WHERE id_paket = $kode_paket ORDER BY id_verif_paket ASC";
+    $resTblVerPaket = $dbOld->query($qTblVerPaket);
+
+    while ($objTblVerPaket = $resTblVerPaket->fetch_object())
+    {
+        $kode_verifikator_penjr = $objTblVerPaket->id_verif_paket;
+        $kode_penjaringan = $kode_penjaringan;
+        $id_user = $objTblVerPaket->id_pegawai;
+
+
+        $qTrxVerPjr = "INSERT INTO trx_verifikator_penjr (kode_verifikator_penjr, kode_penjaringan, id_user)
+        VALUES (
+            $kode_verifikator_penjr,
+            $kode_penjaringan,
+            $id_user
+        )";
+
+
+        $dbNew->query($qTrxVerPjr);
+
+        echo 'verifikator_ditunjuk: ' . $id_user . PHP_EOL;
+    }
+
 
 }
 

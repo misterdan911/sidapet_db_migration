@@ -340,6 +340,12 @@ CREATE TABLE ref_saham_perusahaan (
   "path_saham" varchar
 );
 
+CREATE TABLE trx_verifikator_penjr (
+  "kode_verifikator_penjr" int PRIMARY KEY,
+  "kode_penjaringan" int,
+  "id_user" int
+);
+
 
 
 
