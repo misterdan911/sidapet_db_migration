@@ -340,13 +340,25 @@ CREATE TABLE ref_saham_perusahaan (
   "path_saham" varchar
 );
 
+
+DROP TABLE IF EXISTS trx_verifikator_penjr;
 CREATE TABLE trx_verifikator_penjr (
   "kode_verifikator_penjr" int PRIMARY KEY,
   "kode_penjaringan" int,
   "id_user" int
 );
 
-
+DROP TABLE IF EXISTS trx_vendor_penjr;
+CREATE TABLE trx_vendor_penjr (
+  "kode_vendor_penjr" serial PRIMARY KEY,
+  "kode_penjaringan" int4,
+  "kode_vendor" int4,
+  "status_evaluasi" status_evaluasi,
+  "is_klarifikasidibuka" bool,
+  "nilai_total" float8,
+  "is_terpilih" bool,
+  "alasan_tidak_terpilih" varchar
+);
 
 
 

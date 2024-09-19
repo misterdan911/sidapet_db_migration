@@ -12,3 +12,8 @@ CREATE TYPE jenis_item AS ENUM (
   'custom'
 );
 
+CREATE TYPE status_evaluasi AS ENUM (
+  'belum_diproses',
+  'proses',
+  'terevaluasi'
+);

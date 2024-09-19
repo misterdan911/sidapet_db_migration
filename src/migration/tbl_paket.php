@@ -10,6 +10,11 @@ $qTrxVerPjr = "TRUNCATE TABLE trx_verifikator_penjr";
 $dbNew->query($qTrxVerPjr);
 echo $qTrxVerPjr . PHP_EOL;
 
+// Truncate trx_vendor_penjr
+$qTrxVendorPjr = "TRUNCATE TABLE trx_vendor_penjr";
+$dbNew->query($qTrxVendorPjr);
+echo $qTrxVendorPjr . PHP_EOL;
+
 
 
 $query = "SELECT * FROM tbl_paket ORDER BY id_paket ASC";
@@ -195,6 +200,61 @@ while ($obj = $res->fetch_object())
 
 
         $dbNew->query($qTrxVerPjr);
+
+        echo 'verifikator_ditunjuk: ' . $id_user . PHP_EOL;
+    }
+
+
+    // migrate trx_vendor_penjr
+    $qTblVerif = "SELECT * FROM tbl_verif WHERE id_paket = $kode_paket ORDER BY id_verif ASC";
+    $resTblVerPaket = $dbOld->query($qTblVerif);
+
+    while ($objTblVerif = $resTblVerPaket->fetch_object())
+    {
+        $kode_verifikator_penjr = $objTblVerif->id_verif;
+        $kode_penjaringan = $kode_penjaringan;
+        $id_user = $objTblVerif->id_pegawai;
+
+        $kode_penjaringan = $kode_penjaringan;
+        $kode_vendor = $objTblVerif->id_profil;
+
+        if ($objTblVerif->status_verif == 4) {
+            $status_evaluasi = 'terevaluasi';
+        }
+        else {
+            $status_evaluasi = 'proses';
+        }
+
+        $is_klarifikasidibuka = 'NULL';
+
+        $nilai_total = $objTblVerif->total_nilai;
+        if (empty($nilai_total)) {
+            $nilai_total = 'NULL';
+        }
+
+        if ($objTblVerif->terpilih == 1) {
+            $is_terpilih = 'TRUE';
+        }
+        else {
+            $is_terpilih = 'FALSE';
+        }
+
+        $alasan_tidak_terpilih = 'NULL';
+
+
+
+        $qTrxVendorPjr = "INSERT INTO trx_vendor_penjr (kode_penjaringan, kode_vendor, status_evaluasi, is_klarifikasidibuka, nilai_total, is_terpilih, alasan_tidak_terpilih)
+        VALUES (
+            $kode_penjaringan,
+            $kode_vendor,
+            '$status_evaluasi',
+            $is_klarifikasidibuka,
+            $nilai_total,
+            $is_terpilih,
+            $alasan_tidak_terpilih
+        )";
+
+        $dbNew->query($qTrxVendorPjr);
 
         echo 'verifikator_ditunjuk: ' . $id_user . PHP_EOL;
     }
