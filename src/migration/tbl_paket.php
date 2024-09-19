@@ -301,72 +301,101 @@ while ($obj = $res->fetch_object())
 
 
 
-        /*
         // migrate trx_penilaian
-        if (($objTblVerif->org_pengalaman == 1) && ($objTblVerif->org_sertifikat == 1)) {
-            $nilai_teknis = 'sesuai';
+        $sqlRefVendor = "SELECT kode_jenis_vendor FROM vendor WHERE kode_vendor = $kode_vendor";
+        $resRefVendor = $dbNew->query($sqlRefVendor);
+        $rowRefVendor = pg_fetch_row($resRefVendor);
+        $kode_jenis_vendor = $rowRefVendor[0];  // 1 perusahaan, 2 perorangan
+
+        $arrNilai = [];
+
+        if ($kode_jenis_vendor == 2) {
+            if (($objTblVerif->org_pengalaman == 1) && ($objTblVerif->org_sertifikat == 1)) {
+                $nilai_teknis = 'sesuai';
+            }
+            else {
+                $nilai_teknis = 'tidak_sesuai';
+            }
+
+            $arrNilai = [
+                'org_data_pribadi' => [
+                    'kode_kelompok_item_penilaian' => 1,
+                    'kode_item_penilaian' => 1,
+                    'nilai' => $objTblVerif->org_data_pribadi == 1 ? 'sesuai' : 'tidak_sesuai'
+                ],
+                'org_npwp_pribadi' => [
+                    'kode_kelompok_item_penilaian' => 2,
+                    'kode_item_penilaian' => 2,
+                    'nilai' => $objTblVerif->org_npwp_pribadi == 1 ? 'sesuai' : 'tidak_sesuai'
+                ],
+                'nilai_teknis' => [
+                    'kode_kelompok_item_penilaian' => 3,
+                    'kode_item_penilaian' => 8,
+                    'nilai' => $nilai_teknis
+                ],
+            ];
         }
-        elseif (empty($objTblVerif->org_pengalaman) && empty($objTblVerif->org_sertifikat)) {
-            $nilai_teknis = null;
+        if ($kode_jenis_vendor == 1)
+        {
+            $arrNilai = [
+                'perus_landasan_hukum' => [
+                    'kode_kelompok_item_penilaian' => 2,
+                    'kode_item_penilaian' => 3,
+                    'nilai' => $objTblVerif->perus_landasan_hukum == 1 ? 'sesuai' : 'tidak_sesuai'
+                ],
+                'perus_pengurus' => [
+                    'kode_kelompok_item_penilaian' => 2,
+                    'kode_item_penilaian' => 4,
+                    'nilai' => $objTblVerif->perus_pengurus == 1 ? 'sesuai' : 'tidak_sesuai'
+                ],
+                'perus_izin_usaha' => [
+                    'kode_kelompok_item_penilaian' => 2,
+                    'kode_item_penilaian' => 5,
+                    'nilai' => $objTblVerif->perus_izin_usaha == 1 ? 'sesuai' : 'tidak_sesuai'
+                ],
+                'perus_data_keuangan' => [
+                    'kode_kelompok_item_penilaian' => 2,
+                    'kode_item_penilaian' => 7,
+                    'nilai' => $objTblVerif->perus_data_keuangan == 1 ? 'sesuai' : 'tidak_sesuai'
+                ],
+                'perus_personalia' => [
+                    'kode_kelompok_item_penilaian' => 3,
+                    'kode_item_penilaian' => 9,
+                    'nilai' => $objTblVerif->perus_personalia
+                ],
+                'perus_fasilitas' => [
+                    'kode_kelompok_item_penilaian' => 3,
+                    'kode_item_penilaian' => 10,
+                    'nilai' => $objTblVerif->perus_fasilitas
+                ],
+                'perus_pengalaman' => [
+                    'kode_kelompok_item_penilaian' => 3,
+                    'kode_item_penilaian' => 11,
+                    'nilai' => $objTblVerif->perus_pengalaman
+                ],
+                'perus_lap_keuangan' => [
+                    'kode_kelompok_item_penilaian' => 4,
+                    'kode_item_penilaian' => 14,
+                    'nilai' => $objTblVerif->perus_lap_keuangan
+                ],
+            ];
         }
 
-        $arrNilai = [
-            'org_data_pribadi' => [
-                'kode_kelompok_item_penilaian' => 1,
-                'kode_item_penilaian' => 1,
-                'nilai' => $objTblVerif->org_data_pribadi
-            ],
-            'org_npwp_pribadi' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->org_npwp_pribadi
-            ],
-            'nilai_teknis' => [
-                'kode_kelompok_item_penilaian' => 3,
-                'kode_item_penilaian' => 8,
-                'nilai' => $nilai_teknis
-            ],
-            'perus_landasan_hukum' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_landasan_hukum
-            ],
-            'perus_pengurus' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_pengurus
-            ],
-            'perus_izin_usaha' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_izin_usaha
-            ],
-            'perus_data_keuangan' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_data_keuangan
-            ],
-            'perus_personalia' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_personalia
-            ],
-            'perus_fasilitas' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_fasilitas
-            ],
-            'perus_pengalaman' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_pengalaman
-            ],
-            'perus_lap_keuangan' => [
-                'kode_kelompok_item_penilaian' => 2,
-                'kode_item_penilaian' => 2,
-                'nilai' => $objTblVerif->perus_lap_keuangan
-            ],
-        ];
+        foreach ($arrNilai as $nilai) {
+
+            $kode_eval_vendor = $rowTrxEvalVendor[0];
+            $id_user = $id_user;
+            $kode_kelompok_item_penilaian = $nilai['kode_kelompok_item_penilaian'];
+            $kode_item_penilaian = $nilai['kode_item_penilaian'];
+            $nilai = $nilai['nilai'];
+
+            
+
+        }
+
+
+
+
 
         
         
@@ -380,12 +409,6 @@ while ($obj = $res->fetch_object())
         
         
 
-        $kode_eval_vendor = $rowTrxEvalVendor[0];
-        $id_user = $id_user;
-        $kode_kelompok_item_penilaian = 
-        $kode_item_penilaian = 
-        $nilai =   
-        */      
         
     }
 
