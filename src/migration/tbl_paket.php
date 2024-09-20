@@ -225,7 +225,17 @@ while ($obj = $res->fetch_object())
         $id_user = $objTblVerif->id_pegawai;
 
         $kode_penjaringan = $kode_penjaringan;
+
+        // Cek vendor nya ada gak di tabel ref_vendor
         $kode_vendor = $objTblVerif->id_profil;
+        $sqlRefVendor = "SELECT kode_jenis_vendor FROM ref_vendor WHERE kode_vendor = $kode_vendor";
+        $resRefVendor = $dbNew->query($sqlRefVendor);
+        $rowRefVendor = pg_fetch_row($resRefVendor);
+
+        // kalo gak ada skip
+        if (!$rowRefVendor) {
+            continue;
+        }
 
         if ($objTblVerif->status_verif == 4) {
             $status_evaluasi = 'terevaluasi';
@@ -302,9 +312,7 @@ while ($obj = $res->fetch_object())
 
 
         // migrate trx_penilaian
-        $sqlRefVendor = "SELECT kode_jenis_vendor FROM ref_vendor WHERE kode_vendor = $kode_vendor";
-        $resRefVendor = $dbNew->query($sqlRefVendor);
-        $rowRefVendor = pg_fetch_row($resRefVendor);
+
         $kode_jenis_vendor = $rowRefVendor[0];  // 1 perusahaan, 2 perorangan
 
         $arrNilai = [];
@@ -403,26 +411,8 @@ while ($obj = $res->fetch_object())
             echo 'nilai: ' . $nilai . PHP_EOL;
 
         }
-
-
-
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        
+       
     }
-
 
 }
 

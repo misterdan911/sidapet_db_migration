@@ -179,7 +179,8 @@ CREATE TABLE ref_pengalaman_perorangan (
   "kode_pengalaman" SERIAL PRIMARY KEY,
   "kode_vendor" int4,
   "nm_pnglmn_org" varchar(255),
-  "path_pnglmn" varchar(255)
+  "path_pnglmn" varchar(255),
+  "custom" jsonb
 );
 
 DROP TABLE IF EXISTS ref_sertif_perorangan;
@@ -343,9 +344,9 @@ CREATE TABLE ref_saham_perusahaan (
 
 DROP TABLE IF EXISTS trx_verifikator_penjr;
 CREATE TABLE trx_verifikator_penjr (
-  "kode_verifikator_penjr" int PRIMARY KEY,
-  "kode_penjaringan" int,
-  "id_user" int
+  "kode_verifikator_penjr" serial PRIMARY KEY,
+  "kode_penjaringan" int4,
+  "id_user" int4
 );
 
 DROP TABLE IF EXISTS trx_vendor_penjr;
