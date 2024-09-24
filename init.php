@@ -14,6 +14,7 @@ require_once(BASE_PATH . '/src/Log.php');
 require_once(BASE_PATH . '/src/DB_OLD.php');
 require_once(BASE_PATH . '/src/DB_NEW.php');
 // require_once(BASE_PATH . '/src/Request.php');
+require_once(BASE_PATH . '/src/Encoding.php');
 
 $GLOBALS['db_old'] = new DB_OLD();
 $GLOBALS['db_new'] = new DB_NEW();

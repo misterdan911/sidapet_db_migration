@@ -15,8 +15,13 @@ while ($obj = $res->fetch_object())
     $div_pnglmn_sekarang = $dbNew->escape_string($obj->div_pnglmn_sekarang);
     $ringkas_pnglmn_sekarang = $dbNew->escape_string($obj->ringkas_pnglmn_sekarang);
     $lok_pnglmn_sekarang = $dbNew->escape_string($obj->lok_pnglmn_sekarang);
+    
     $pemberi_pnglmn_sekarang = $dbNew->escape_string($obj->pemberi_pnglmn_sekarang);
+    $pemberi_pnglmn_sekarang = Encoding::toUTF8($pemberi_pnglmn_sekarang);
+
     $alamat_pnglmn_sekarang = $dbNew->escape_string($obj->alamat_pnglmn_sekarang);
+    $alamat_pnglmn_sekarang = Encoding::toUTF8($alamat_pnglmn_sekarang);
+
     $tgl_pnglmn_sekarang = $dbNew->escape_string($obj->tgl_pnglmn_sekarang);
     $nilai_pnglmn_sekarang = $dbNew->escape_string($obj->nilai_pnglmn_sekarang);
     $status_pnglmn_sekarang = $dbNew->escape_string($obj->status_pnglmn_sekarang);

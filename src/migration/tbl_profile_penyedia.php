@@ -40,18 +40,12 @@ while ($obj = $res->fetch_object())
         id_user, 
         kode_jenis_vendor, 
         nama_perusahaan, 
-        email, 
-        kode_domisili,
-        swafoto, 
         is_tetap
     ) VALUES (
         $kode_vendor,
         $id_user,
         $kode_jenis_vendor,
         '$nama_perusahaan',
-        '$email',
-        $kode_domisili,
-        $swafoto,
         $is_tetap
     )";    
 

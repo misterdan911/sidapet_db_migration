@@ -26,7 +26,10 @@ while ($obj = $res->fetch_object())
     $kode_ijin_usaha = $obj->id_ijin_usaha;
     $kode_vendor = $obj->id_profil_penyedia;
     $nama_izin = $dbNew->escape_string($obj->nama_izin);
+
     $no_izin = $dbNew->escape_string($obj->no_izin);
+    $no_izin = cleanInvalidUtf8($no_izin);
+
     $masa_izin = $dbNew->escape_string($obj->masa_izin);
     $pemberi_izin = $dbNew->escape_string($obj->pemberi_izin);
     $kualifikasi_usaha = $dbNew->escape_string($obj->kualifikasi_usaha);

@@ -11,3 +11,9 @@ function parseDateTime($dateTime)
 
     return $dateTime;
 }
+
+
+function cleanInvalidUtf8($data) {
+    $clean_data = str_replace("–", "-", $data);
+    return $clean_data;
+}
