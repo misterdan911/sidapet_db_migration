@@ -3,7 +3,7 @@
 $query = "SELECT * FROM tbl_domisili ORDER BY id_domisili ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     $kode_domisili = $obj->id_domisili;
     $nama_domisili = $obj->nama_domisili;

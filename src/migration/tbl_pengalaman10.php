@@ -7,11 +7,11 @@ echo $query . PHP_EOL;
 $query = "SELECT * FROM tbl_pengalaman10 ORDER BY id_pengalaman10 ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     $kode_pengalaman10 = $obj->id_pengalaman10;
     $kode_vendor = $obj->id_profil_penyedia;
-    $nm_pnglmn_10 = $obj->nm_pnglmn_10;
+    $nm_pnglmn_10 = $dbNew->escape_string($obj->nm_pnglmn_10);
     $div_pnglmn_10 = $dbNew->escape_string($obj->div_pnglmn_10);
     $ringkas_pnglmn_10 = $dbNew->escape_string($obj->ringkas_pnglmn_10);
     $lok_pnglmn_10 = $dbNew->escape_string($obj->lok_pnglmn_10);

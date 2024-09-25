@@ -26,7 +26,7 @@ $query = "SELECT * FROM tbl_paket ORDER BY id_paket ASC";
 $res = $dbOld->query($query);
 
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     // $kode_belanja = $obj->id_kbelanja;
     $kode_paket = $obj->id_paket;
@@ -161,7 +161,7 @@ while ($obj = $res->fetch_object())
     $sqlTblPaketUndang = "SELECT * FROM tbl_paket_undang WHERE id_paket = $kode_paket";
     $resTblPaketUndang = $dbOld->query($sqlTblPaketUndang);
 
-    while ($objTblPaketUndang = $resTblPaketUndang->fetch_object())
+    while ($objTblPaketUndang = $dbOld->fetch_object($resTblPaketUndang))
     {
         $nama = 'NULL';
         $email = $objTblPaketUndang->email;
@@ -191,7 +191,7 @@ while ($obj = $res->fetch_object())
 
     $arrVerif = [];
 
-    while ($objTblVerPaket = $resTblVerPaket->fetch_object())
+    while ($objTblVerPaket = $dbOld->fetch_object($resTblVerPaket))
     {
         $kode_verifikator_penjr = $objTblVerPaket->id_verif_paket;
         $kode_penjaringan = $kode_penjaringan;
@@ -218,7 +218,7 @@ while ($obj = $res->fetch_object())
     $qTblVerif = "SELECT * FROM tbl_verif WHERE id_paket = $kode_paket ORDER BY id_verif ASC";
     $resTblVerPaket = $dbOld->query($qTblVerif);
 
-    while ($objTblVerif = $resTblVerPaket->fetch_object())
+    while ($objTblVerif = $dbOld->fetch_object($resTblVerPaket))
     {
         $kode_verifikator_penjr = $objTblVerif->id_verif;
         $kode_penjaringan = $kode_penjaringan;

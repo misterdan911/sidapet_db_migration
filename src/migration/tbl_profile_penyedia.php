@@ -9,7 +9,7 @@ echo $qRefVendor . PHP_EOL;
 $query = "SELECT * FROM tbl_profile_penyedia ORDER BY id_profil_penyedia ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     $kode_vendor = $obj->id_profil_penyedia;
     $id_user = 'NULL';

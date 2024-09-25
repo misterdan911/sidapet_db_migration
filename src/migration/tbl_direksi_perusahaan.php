@@ -7,7 +7,7 @@ echo $query . PHP_EOL;
 $query = "SELECT * FROM tbl_direksi_perusahaan ORDER BY id_direksi_perus ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
 
     $kode_direksi_perus = $obj->id_direksi_perus;

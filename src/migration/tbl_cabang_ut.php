@@ -3,7 +3,7 @@
 $query = "SELECT * FROM tbl_cabang_ut ORDER BY id_cabang ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     $kode_cabang_ut = $obj->id_cabang;
 

@@ -7,7 +7,7 @@ echo $query . PHP_EOL;
 $query = "SELECT * FROM tbl_akta_perusahaan ORDER BY id_akta ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     $kode_akta = $obj->id_akta;
     $kode_vendor = $obj->id_profil_penyedia;

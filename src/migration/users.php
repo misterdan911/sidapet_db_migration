@@ -13,7 +13,7 @@ foreach($query as $q) {
 $query = "SELECT * FROM users ORDER BY id ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     $kode_ppk = $obj->id;
     $name = $dbNew->escape_string($obj->name);

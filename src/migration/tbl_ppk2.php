@@ -3,7 +3,7 @@
 $query = "SELECT * FROM tbl_ppk2 ORDER BY id_ppk ASC";
 $res = $dbOld->query($query);
 
-while ($obj = $res->fetch_object())
+while ($obj = $dbOld->fetch_object($res))
 {
     $kode_ppk = $obj->id_ppk;
 
