@@ -37,6 +37,54 @@ CREATE TABLE ref_jenis_vendor (
 );
 
 
+DROP TABLE IF EXISTS ref_vendor_register;
+CREATE TABLE ref_vendor_register (
+  "kode_register" serial PRIMARY KEY,
+  "kode_jenis_vendor" int2,
+  "nama_perusahaan" varchar,
+  "email" varchar,
+  "password" varchar,
+  "nomor_handphone" varchar,
+  "swafoto" varchar,
+  "status_register" status_persetujuan,
+  "alasan_ditolak" varchar,
+  "user_verif" varchar,
+  "udcr" timestamp,
+  "udch" timestamp,
+  "message" varchar,
+  "similarity" varchar,
+  "distance_percentage" decimal,
+  "distance_point" decimal,
+  "keypass" varchar,
+  "kode_vendor" int4
+);
+
+
+
+DROP TABLE IF EXISTS ref_vendor_reg_history;
+CREATE TABLE ref_vendor_reg_history (
+  "kode_register" serial PRIMARY KEY,
+  "kode_jenis_vendor" int2,
+  "nama_perusahaan" varchar,
+  "email" varchar,
+  "password" varchar,
+  "nomor_handphone" varchar,
+  "swafoto" varchar,
+  "status_register" status_persetujuan,
+  "alasan_ditolak" varchar,
+  "user_verif" varchar,
+  "udcr" timestamp,
+  "udch" timestamp,
+  "message" varchar,
+  "similarity" varchar,
+  "distance_percentage" decimal,
+  "distance_point" decimal,
+  "keypass" varchar,
+  "kode_vendor" int4
+);
+
+
+
 DROP TABLE IF EXISTS ref_vendor;
 CREATE TABLE ref_vendor (
   "kode_vendor" serial PRIMARY KEY,
@@ -146,6 +194,16 @@ CREATE TABLE ref_ppk (
 );
 
 
+DROP TABLE IF EXISTS ref_kat_dokumen_vendor;
+CREATE TABLE "ref_kat_dokumen_vendor" (
+  "kode_kat_dokumen_vendor" serial PRIMARY KEY,
+  "kode_jenis_vendor" int2,
+  "urutan" int2,
+  "is_main" bool,
+  "is_has_sub" bool,
+  "main_kat" int4,
+  "nama_kategori" varchar
+);
 
 DROP TABLE IF EXISTS ref_kategori_item;
 CREATE TABLE ref_kategori_item (

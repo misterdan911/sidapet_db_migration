@@ -1,0 +1,23 @@
+kode_kat_item_tanya,kode_kat_dokumen_vendor,urutan,kategori_item
+1,1,1,Pakta Integritas
+2,2,1,Identitas Perusahaan
+3,2,2,Bank
+4,6,1,Akta Pendirian Perusahaan/Anggaran Dasar Koperasi
+5,6,2,Perubahan Terakhir Akta Pendirian Perusahaan /Anggaran Dasar Koperasi
+6,7,1,Komisaris untuk Perseroan Terbatas (PT)
+7,7,2,Direksi/Pengurus Badan Usaha
+8,8,1,Izin Usaha dan Tanda Daftar Perusahaan
+9,9,1,Susunan Kepemilikan Saham (PT) / Susunan Pesero (CV/Firma)
+10,10,1,Data Keuangan
+11,11,1,Data Personalia
+12,12,1,Data Fasilitas/Peralatan/Perlengkapan
+13,13,1,Pengalaman
+14,14,1,Pekerjaan yang Sedang Dikerjakan
+15,5,1,Data Keuangan
+16,15,1,Pakta Integritas
+17,16,1,Identitas Diri
+18,16,2,Bank
+19,17,1,Data Pribadi
+20,17,2,NPWP Pribadi
+21,18,1,Pengalaman
+22,18,2,Sertifikat Keahlian atau Ijazah Terakhir

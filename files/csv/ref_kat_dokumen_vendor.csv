@@ -1,0 +1,19 @@
+kode_kat_dokumen_vendor,kode_jenis_vendor,urutan,is_main,is_has_sub,main_kat,nama_kategori
+1,1,1,TRUE,FALSE,,Pakta Integritas
+2,1,2,TRUE,FALSE,,Data Diri
+3,1,3,TRUE,TRUE,,Administrasi dan Kualifikasi
+4,1,4,TRUE,TRUE,,Teknis
+5,1,5,TRUE,FALSE,,Keuangan
+6,1,1,FALSE,FALSE,3,Landasan Hukum Pendirian Badan Usaha
+7,1,2,FALSE,FALSE,3,Pengurus Badan Usaha
+8,1,3,FALSE,FALSE,3,Izin Usaha
+9,1,4,FALSE,FALSE,3,Susunan Kepemilikan Saham / Persero
+10,1,5,FALSE,FALSE,3,Data Keuangan
+11,1,1,FALSE,FALSE,4,Data Personalia
+12,1,2,FALSE,FALSE,4,Data Fasilitas/Peralatan/Perlengkapan
+13,1,3,FALSE,FALSE,4,Pengalaman
+14,1,4,FALSE,FALSE,4,Pekerjaan yang sedang dikerjakan
+15,2,1,TRUE,FALSE,,Pakta Integritas
+16,2,2,TRUE,FALSE,,Data Diri
+17,2,3,TRUE,FALSE,,Administrasi dan Kualifikasi
+18,2,4,TRUE,FALSE,,Teknis

@@ -41,6 +41,59 @@ INSERT INTO ref_kategori_item VALUES (30, 'Ketentuan Pengalaman');
 
 
 
+-- ---------------------------------
+-- Records of ref_kat_dokumen_vendor
+-- ---------------------------------
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (1, 1, 1, 't', 'f', NULL, 'Pakta Integritas');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (2, 1, 2, 't', 'f', NULL, 'Data Diri');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (3, 1, 3, 't', 't', NULL, 'Administrasi dan Kualifikasi');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (4, 1, 4, 't', 't', NULL, 'Teknis');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (5, 1, 5, 't', 'f', NULL, 'Keuangan');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (6, 1, 1, 'f', 'f', 3, 'Landasan Hukum Pendirian Badan Usaha');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (7, 1, 2, 'f', 'f', 3, 'Pengurus Badan Usaha');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (8, 1, 3, 'f', 'f', 3, 'Izin Usaha');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (9, 1, 4, 'f', 'f', 3, 'Susunan Kepemilikan Saham / Persero');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (10, 1, 5, 'f', 'f', 3, 'Data Keuangan');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (11, 1, 1, 'f', 'f', 4, 'Data Personalia');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (12, 1, 2, 'f', 'f', 4, 'Data Fasilitas/Peralatan/Perlengkapan');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (13, 1, 3, 'f', 'f', 4, 'Pengalaman');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (14, 1, 4, 'f', 'f', 4, 'Pekerjaan yang sedang dikerjakan');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (15, 2, 1, 't', 'f', NULL, 'Pakta Integritas');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (16, 2, 2, 't', 'f', NULL, 'Data Diri');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (17, 2, 3, 't', 'f', NULL, 'Administrasi dan Kualifikasi');
+INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (18, 2, 4, 't', 'f', NULL, 'Teknis');
+
+
+
+
+-- ----------------------------
+-- Records of ref_kat_item_tanya
+-- ----------------------------
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (1, 1, 1, 'Pakta Integritas');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (2, 2, 1, 'Identitas Perusahaan');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (3, 2, 2, 'Bank');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (4, 6, 1, 'Akta Pendirian Perusahaan/Anggaran Dasar Koperasi');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (5, 6, 2, 'Perubahan Terakhir Akta Pendirian Perusahaan /Anggaran Dasar Koperasi');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (6, 7, 1, 'Komisaris untuk Perseroan Terbatas (PT)');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (7, 7, 2, 'Direksi/Pengurus Badan Usaha');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (8, 8, 1, 'Izin Usaha dan Tanda Daftar Perusahaan');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (9, 9, 1, 'Susunan Kepemilikan Saham (PT) / Susunan Pesero (CV/Firma)');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (10, 10, 1, 'Data Keuangan');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (11, 11, 1, 'Data Personalia');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (12, 12, 1, 'Data Fasilitas/Peralatan/Perlengkapan');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (13, 13, 1, 'Pengalaman');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (14, 14, 1, 'Pekerjaan yang Sedang Dikerjakan');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (15, 5, 1, 'Data Keuangan');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (16, 15, 1, 'Pakta Integritas');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (17, 16, 1, 'Identitas Diri');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (18, 16, 2, 'Bank');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (19, 17, 1, 'Data Pribadi');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (20, 17, 2, 'NPWP Pribadi');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (21, 18, 1, 'Pengalaman');
+INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (22, 18, 2, 'Sertifikat Keahlian atau Ijazah Terakhir');
+
+
+
 -- ----------------------------
 -- Records of ref_item_tanya
 -- ----------------------------
