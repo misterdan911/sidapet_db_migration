@@ -17,3 +17,4 @@ CREATE TYPE status_evaluasi AS ENUM (
   'proses',
   'terevaluasi'
 );
+

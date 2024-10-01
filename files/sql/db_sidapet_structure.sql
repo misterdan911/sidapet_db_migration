@@ -218,18 +218,17 @@ DROP TABLE IF EXISTS ref_item_tanya;
 CREATE TABLE ref_item_tanya (
   "kode_item" serial PRIMARY KEY,
   "kode_jenis_vendor" int2,
-  "step_persyaratan" int2,
-  "sub_step_persyaratan" int2,
-  "kode_kategori_item" int2,
+  "kode_kat_item_tanya" int4,
+  "urutan" int2,
   "nama_item" varchar,
   "keterangan" varchar,
   "tipe_input" tipe_input,
   "metadata" json,
   "jenis_item" jenis_item,
-  "ucr" timestamp,
-  "uch" timestamp,
-  "udcr" timestamp,
-  "udch" timestamp
+  "ucr" varchar,
+  "uch" varchar,
+  "udcr" timestamptz,
+  "udch" timestamptz
 );
 
 DROP TABLE IF EXISTS ref_pengalaman_perorangan;
