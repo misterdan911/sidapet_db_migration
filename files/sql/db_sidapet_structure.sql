@@ -231,6 +231,14 @@ CREATE TABLE ref_item_tanya (
   "udch" timestamptz
 );
 
+DROP TABLE IF EXISTS trx_jawab_profil;
+CREATE TABLE trx_jawab_profil (
+  "kode_jawab_profil" serial PRIMARY KEY,
+  "kode_vendor" int4,
+  "kode_item" int4,
+  "isian" varchar
+);
+
 DROP TABLE IF EXISTS ref_pengalaman_perorangan;
 CREATE TABLE ref_pengalaman_perorangan (
   "kode_pengalaman" SERIAL PRIMARY KEY,
