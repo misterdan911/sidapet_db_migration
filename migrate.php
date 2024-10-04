@@ -15,7 +15,7 @@ include('src/migration/tbl_cabang_ut.php');
 include('src/migration/tbl_ppk2.php');
 include('src/migration/users.php');
 include('src/migration/tbl_profile_penyedia.php');
-// include('src/migration/tbl_paket.php');
+include('src/migration/tbl_paket.php');
  
 include('src/migration/tbl_domisili.php');
 
