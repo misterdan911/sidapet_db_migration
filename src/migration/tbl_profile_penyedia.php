@@ -1,9 +1,14 @@
 <?php
 
-// Truncate ref_vendor
-$qRefVendor = "TRUNCATE TABLE ref_vendor";
+// Truncate
+$qRefVendor = "TRUNCATE TABLE ref_vendor CASCADE";
 $dbNew->query($qRefVendor);
 echo $qRefVendor . PHP_EOL;
+
+$qTrxJawabProfil = "TRUNCATE TABLE trx_jawab_profil CASCADE";
+$dbNew->query($qTrxJawabProfil);
+echo $qTrxJawabProfil . PHP_EOL;
+
 
 
 $query = "SELECT * FROM tbl_profile_penyedia ORDER BY id_profil_penyedia ASC";

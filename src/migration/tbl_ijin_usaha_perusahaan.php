@@ -1,6 +1,6 @@
 <?php
 
-$query = "TRUNCATE TABLE ref_ijin_usaha_perusahaan";
+$query = "TRUNCATE TABLE ref_ijin_usaha_perusahaan CASCADE";
 $dbNew->query($query);
 echo $query . PHP_EOL;
 

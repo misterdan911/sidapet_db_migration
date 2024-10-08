@@ -1,52 +1,17 @@
 -- ----------------------------
 -- Records of ref_jenis_vendor
 -- ----------------------------
-TRUNCATE TABLE ref_jenis_vendor;
+TRUNCATE TABLE ref_jenis_vendor CASCADE;
 INSERT INTO ref_jenis_vendor ("kode_jenis_vendor", "jenis_vendor") VALUES (1, 'Perusahaan');
 INSERT INTO ref_jenis_vendor ("kode_jenis_vendor", "jenis_vendor") VALUES (2, 'Perorangan');
 
-
--- ----------------------------
--- Records of ref_kategori_item
--- ----------------------------
-TRUNCATE TABLE ref_kategori_item;
-INSERT INTO ref_kategori_item VALUES (1, 'Identitas Diri');
-INSERT INTO ref_kategori_item VALUES (2, 'Bank');
-INSERT INTO ref_kategori_item VALUES (3, 'Ketentuan Bank');
-INSERT INTO ref_kategori_item VALUES (4, 'Data Pribadi Administrasi');
-INSERT INTO ref_kategori_item VALUES (5, 'NPWP Pribadi');
-INSERT INTO ref_kategori_item VALUES (6, 'Ketentuan Administrasi');
-INSERT INTO ref_kategori_item VALUES (7, 'Akta Pendirian');
-INSERT INTO ref_kategori_item VALUES (8, 'Perubahan Terakhir Pendirian');
-INSERT INTO ref_kategori_item VALUES (9, 'Ketentuan Landasan Pendirian');
-INSERT INTO ref_kategori_item VALUES (10, 'Komisaris PT');
-INSERT INTO ref_kategori_item VALUES (11, 'Direksi Badan Usaha');
-INSERT INTO ref_kategori_item VALUES (12, 'Ketentuan Badan Usaha');
-INSERT INTO ref_kategori_item VALUES (13, 'Izin Usaha');
-INSERT INTO ref_kategori_item VALUES (14, 'Ketentuan Izin Usaha');
-INSERT INTO ref_kategori_item VALUES (15, 'Susunan Kepemilikan');
-INSERT INTO ref_kategori_item VALUES (16, 'Ketentuan Susunan Kepemilikan');
-INSERT INTO ref_kategori_item VALUES (17, 'Data Keuangan');
-INSERT INTO ref_kategori_item VALUES (18, 'Ketentuan Data Keuangan');
-INSERT INTO ref_kategori_item VALUES (19, 'Data Teknis Pengalaman');
-INSERT INTO ref_kategori_item VALUES (20, 'Sertifikat Ijazah Terakhir');
-INSERT INTO ref_kategori_item VALUES (21, 'Ketentuan Data Teknis');
-INSERT INTO ref_kategori_item VALUES (22, 'Data Personalia');
-INSERT INTO ref_kategori_item VALUES (23, 'Ketentuan Data Personalia');
-INSERT INTO ref_kategori_item VALUES (24, 'Data Fasilitas');
-INSERT INTO ref_kategori_item VALUES (25, 'Direksi Badan Usaha');
-INSERT INTO ref_kategori_item VALUES (26, 'Ketentuan Data Fasilitas');
-INSERT INTO ref_kategori_item VALUES (27, 'Pengalaman kurun waktu 10');
-INSERT INTO ref_kategori_item VALUES (28, 'Pengalaman Kurun waktu 3 tahun');
-INSERT INTO ref_kategori_item VALUES (29, 'Pekerjaan Saat Ini');
-INSERT INTO ref_kategori_item VALUES (30, 'Ketentuan Pengalaman');
 
 
 
 -- ---------------------------------
 -- Records of ref_kat_dokumen_vendor
 -- ---------------------------------
-TRUNCATE TABLE ref_kat_dokumen_vendor;
+TRUNCATE TABLE ref_kat_dokumen_vendor CASCADE;
 INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (1, 1, 1, 't', 'f', NULL, 'Pakta Integritas');
 INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (2, 1, 2, 't', 'f', NULL, 'Data Diri');
 INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (3, 1, 3, 't', 't', NULL, 'Administrasi dan Kualifikasi');
@@ -72,7 +37,7 @@ INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendo
 -- ----------------------------
 -- Records of ref_kat_item_tanya
 -- ----------------------------
-TRUNCATE TABLE ref_kat_item_tanya;
+TRUNCATE TABLE ref_kat_item_tanya CASCADE;
 INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (1, 1, 1, 'Pakta Integritas');
 INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (2, 2, 1, 'Identitas Perusahaan');
 INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (3, 2, 2, 'Bank');
@@ -101,7 +66,7 @@ INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor"
 -- ----------------------------
 -- Records of ref_item_tanya
 -- ----------------------------
-TRUNCATE TABLE ref_item_tanya;
+TRUNCATE TABLE ref_item_tanya CASCADE;
 INSERT INTO ref_item_tanya ("kode_item", "kode_jenis_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (1, 1, 1, 1, 'Pakta Integritas', NULL, 'checkbox', NULL, 'default', NULL, NULL, NULL, NULL);
 INSERT INTO ref_item_tanya ("kode_item", "kode_jenis_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (2, 1, 2, 1, 'Domisili', NULL, 'select', '{"nama_tabel": "ref_domisili"}', 'default', NULL, NULL, NULL, NULL);
 INSERT INTO ref_item_tanya ("kode_item", "kode_jenis_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (3, 1, 2, 2, 'Alamat', NULL, 'textarea', NULL, 'default', NULL, NULL, NULL, NULL);
@@ -184,14 +149,14 @@ INSERT INTO ref_item_tanya ("kode_item", "kode_jenis_vendor", "kode_kat_item_tan
 INSERT INTO ref_item_tanya ("kode_item", "kode_jenis_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (80, 2, 22, 1, 'Sertifikat Keahlian atau Ijazah Terakhir', NULL, 'table', '{"nama_tabel": "ref_domisili"}', 'default', NULL, NULL, NULL, NULL);
 
 
-TRUNCATE TABLE ref_kelompok_item_penilaian;
+TRUNCATE TABLE ref_kelompok_item_penilaian CASCADE;
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (1, 'Data Diri');
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (2, 'Administrasi');
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (3, 'Teknis');
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (4, 'Keuangan');
 
 
-TRUNCATE TABLE ref_item_penilaian;
+TRUNCATE TABLE ref_item_penilaian CASCADE;
 INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (1, 1, 'Data Diri', 't', 't');
 INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (2, 2, 'Administrasi', 'f', 't');
 INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (3, 2, 'Landasan Hukum Pendirian Badan Usaha', 't', 'f');

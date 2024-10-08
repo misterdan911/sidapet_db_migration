@@ -1,5 +1,11 @@
 <?php
 
+// Truncate
+$qRefCabangUt = "TRUNCATE TABLE ref_cabang_ut CASCADE";
+$dbNew->query($qRefCabangUt);
+echo $qRefCabangUt . PHP_EOL;
+
+
 $query = "SELECT * FROM tbl_cabang_ut ORDER BY id_cabang ASC";
 $res = $dbOld->query($query);
 

@@ -1,5 +1,10 @@
 <?php
 
+// Truncate
+$qRefDomisili = "TRUNCATE TABLE ref_domisili CASCADE";
+$dbNew->query($qRefDomisili);
+echo $qRefDomisili . PHP_EOL;
+
 $query = "SELECT * FROM tbl_domisili ORDER BY id_domisili ASC";
 $res = $dbOld->query($query);
 

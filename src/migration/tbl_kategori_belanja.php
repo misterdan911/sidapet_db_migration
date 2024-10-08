@@ -1,5 +1,11 @@
 <?php
 
+// Truncate
+$qRefKategoriBelanja = "TRUNCATE TABLE ref_kategori_belanja CASCADE";
+$dbNew->query($qRefKategoriBelanja);
+echo $qRefKategoriBelanja . PHP_EOL;
+
+
 $query = "SELECT * FROM tbl_kategori_belanja ORDER BY id_kategori_belanja ASC";
 $res = $dbOld->query($query);
 

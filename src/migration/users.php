@@ -1,7 +1,7 @@
 <?php
 
 $query = [
-    "TRUNCATE TABLE users",
+    "TRUNCATE TABLE users CASCADE",
 ];
 
 foreach($query as $q) {

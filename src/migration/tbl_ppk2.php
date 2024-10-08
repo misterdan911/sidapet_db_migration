@@ -1,5 +1,10 @@
 <?php
 
+// Truncate
+$qRefPpk = "TRUNCATE TABLE ref_ppk CASCADE";
+$dbNew->query($qRefPpk);
+echo $qRefPpk . PHP_EOL;
+
 $query = "SELECT * FROM tbl_ppk2 ORDER BY id_ppk ASC";
 $res = $dbOld->query($query);
 
