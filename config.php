@@ -16,7 +16,7 @@ define('DB_PASSWORD_OLD', 'postgres123');
 
 define('DB_HOST_NEW', 'localhost');
 define('DB_PORT_NEW', '5432');
-define('DB_DATABASE_NEW', 'db_iseng');
+define('DB_DATABASE_NEW', 'db_sidapet');
 define('DB_USERNAME_NEW', 'postgres');
 define('DB_PASSWORD_NEW', 'postgres123');
 

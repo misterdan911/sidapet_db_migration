@@ -39,7 +39,7 @@ while ($obj = $dbOld->fetch_object($res))
      FROM
         ref_cabang_ut AS rc
         LEFT JOIN ref_ppk ON rc.kode_ppk = ref_ppk.kode_ppk
-        LEFT JOIN users ON ref_ppk.id_user = users.id
+        LEFT JOIN users ON ref_ppk.user_email = users.email
      WHERE
         kode_cabang_ut = $kode_cabang_ut
     ";

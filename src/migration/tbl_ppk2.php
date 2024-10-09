@@ -5,17 +5,28 @@ $qRefPpk = "TRUNCATE TABLE ref_ppk CASCADE";
 $dbNew->query($qRefPpk);
 echo $qRefPpk . PHP_EOL;
 
-$query = "SELECT * FROM tbl_ppk2 ORDER BY id_ppk ASC";
+$query = "
+    SELECT
+        id_ppk,
+        id_user,
+        nama_anggota,
+        nip_ppk,
+        uraian_jabatan,
+        id_cn,
+        kode_unit,
+        nomor_ppkualitas,
+        aktif_ppk,
+        users.email
+    FROM tbl_ppk2
+    LEFT JOIN users ON tbl_ppk2.id_user = users.id
+    ORDER BY id_ppk ASC
+";
 $res = $dbOld->query($query);
 
 while ($obj = $dbOld->fetch_object($res))
 {
     $kode_ppk = $obj->id_ppk;
-
-    $id_user = $obj->id_user;
-    if (empty($id_user)) {
-        $id_user = 'NULL';
-    }
+    $user_email = prepareString($dbNew, $obj->email);
 
     $nama_anggota = $obj->nama_anggota;
 
@@ -30,10 +41,10 @@ while ($obj = $dbOld->fetch_object($res))
     $nomor_ppkualitas = $obj->nomor_ppkualitas;
     $aktif_ppk = $obj->aktif_ppk;
 
-    $query = "INSERT INTO ref_ppk (kode_ppk, id_user, nama_anggota, nip_ppk, uraian_jabatan, id_cn, kode_unit, nomor_ppkualitas, aktif_ppk)
+    $query = "INSERT INTO ref_ppk (kode_ppk, user_email, nama_anggota, nip_ppk, uraian_jabatan, id_cn, kode_unit, nomor_ppkualitas, aktif_ppk)
     VALUES (
         $kode_ppk,
-        $id_user,
+        $user_email,
         '$nama_anggota',
         $nip_ppk,
         '$uraian_jabatan',

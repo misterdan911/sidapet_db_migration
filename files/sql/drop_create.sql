@@ -344,7 +344,7 @@ CREATE TABLE "ref_cabang_ut" (
 
 CREATE TABLE "ref_ppk" (
   "kode_ppk" serial PRIMARY KEY,
-  "id_user" int4,
+  "user_email" varchar,
   "nama_anggota" varchar,
   "nip_ppk" int8,
   "uraian_jabatan" varchar,
@@ -353,6 +353,7 @@ CREATE TABLE "ref_ppk" (
   "nomor_ppkualitas" varchar,
   "aktif_ppk" varchar
 );
+
 
 CREATE TABLE "ref_domisili" (
   "kode_domisili" int4 PRIMARY KEY,
