@@ -152,7 +152,6 @@ CREATE TABLE "ref_kategori_belanja" (
 
 CREATE TABLE "trx_paket" (
   "kode_paket" serial PRIMARY KEY,
-  "email_user" varchar,
   "kode_cabang_ut" int4,
   "kode_kategori_belanja" int4,
   "nama_paket" varchar,
@@ -182,13 +181,13 @@ CREATE TABLE "trx_penjaringan" (
   "status_persetujuan" status_persetujuan,
   "id_user_persetujuan" int4,
   "alasan_ditolak" varchar,
-  "daftar_awal" timestamp,
-  "daftar_akhir" timestamp,
-  "evaluasi_awal" timestamp,
-  "evaluasi_akhir" timestamp,
-  "pengumuman" timestamp,
+  "tgl_daftar_awal" timestamptz,
+  "tgl_daftar_akhir" timestamptz,
+  "tgl_evaluasi_awal" timestamptz,
+  "tgl_evaluasi_akhir" timestamptz,
+  "tgl_pengumuman" timestamptz,
   "s_tugas_dibuat" bool,
-  "udcr" timestamp
+  "udcr" timestamptz
 );
 
 CREATE TABLE "trx_undangan_penjr" (
@@ -518,9 +517,9 @@ COMMENT ON COLUMN "ref_vendor"."is_tetap" IS 'nilai defaultnya ''false'' kalau b
 
 COMMENT ON COLUMN "ref_kategori_belanja"."id_user_verif" IS 'User yang menerima atau menolak pengajuan kategori belanja';
 
-COMMENT ON COLUMN "trx_paket"."id_user" IS 'ID User yang membuat paket';
-
 COMMENT ON COLUMN "trx_paket"."ket_lainya" IS 'Kalau dipilih jenis pengadaan ''Lainya'' ini harus diisi';
+
+COMMENT ON COLUMN "trx_paket"."ucr" IS 'Email User yang membuat paket';
 
 COMMENT ON COLUMN "trx_penjaringan"."status_persetujuan" IS 'Flag pengajuan paket diterima atau tidak';
 

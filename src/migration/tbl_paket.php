@@ -34,19 +34,18 @@ while ($obj = $dbOld->fetch_object($res))
 
     $qCabang = "
     SELECT
-        users.ID AS user_id,
+        users.email AS email,
         cabang_ut 
      FROM
         ref_cabang_ut AS rc
         LEFT JOIN ref_ppk ON rc.kode_ppk = ref_ppk.kode_ppk
-        LEFT JOIN users ON ref_ppk.id_user = users.id 
+        LEFT JOIN users ON ref_ppk.id_user = users.id
      WHERE
         kode_cabang_ut = $kode_cabang_ut
     ";
     $resCabang = $dbNew->query($qCabang);
     $objCabang = pg_fetch_object($resCabang);
 
-    $id_user = $objCabang->user_id;
     empty($id_user) ? $id_user = 'NULL' : $id_user;
 
     $kode_kategori_belanja = $obj->id_kategori_belanja;
@@ -65,16 +64,15 @@ while ($obj = $dbOld->fetch_object($res))
     $is_kualifikasi_b = 'NULL';
     $is_pembuka = 'FALSE';
     $teks_pembuka = 'FALSE';
-    $ucr = 'NULL';
+    $ucr = prepareString($dbNew, $objCabang->email);
     $uch = 'NULL';
     $udch = 'NULL';
     $udcr = $obj->created_at;
 
 
-    $query = "INSERT INTO trx_paket (kode_paket, id_user, kode_cabang_ut, kode_kategori_belanja, nama_paket, kode_jenis_pengadaan, ket_lainya, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, is_pembuka, teks_pembuka, ucr, uch, udch, udcr)
+    $query = "INSERT INTO trx_paket (kode_paket, kode_cabang_ut, kode_kategori_belanja, nama_paket, kode_jenis_pengadaan, ket_lainya, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, is_pembuka, teks_pembuka, ucr, uch, udch, udcr)
     VALUES (
     $kode_paket,
-    $id_user,
     $kode_cabang_ut,
     $kode_kategori_belanja,
     '$nama_paket',
@@ -129,9 +127,9 @@ while ($obj = $dbOld->fetch_object($res))
         alasan_ditolak,
         tgl_daftar_awal,
         tgl_daftar_akhir,
-        tgl_eval_awal,
-        tgl_eval_akhir,
-        tgl_umum_paket,
+        tgl_evaluasi_awal,
+        tgl_evaluasi_akhir,
+        tgl_pengumuman,
         s_tugas_dibuat,
         udcr
     ) VALUES (
