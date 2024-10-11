@@ -1,50 +1,3 @@
-DROP TABLE IF EXISTS ref_akta_perusahaan CASCADE;
-DROP TABLE IF EXISTS ref_cabang_ut CASCADE;
-DROP TABLE IF EXISTS ref_direksi_perusahaan CASCADE;
-DROP TABLE IF EXISTS ref_domisili CASCADE;
-DROP TABLE IF EXISTS ref_fasilitas_perusahaan CASCADE;
-DROP TABLE IF EXISTS ref_ijin_usaha_perusahaan CASCADE;
-DROP TABLE IF EXISTS ref_item_penilaian CASCADE;
-DROP TABLE IF EXISTS ref_item_tanya CASCADE;
-DROP TABLE IF EXISTS ref_jenis_pengadaan CASCADE;
-DROP TABLE IF EXISTS ref_jenis_vendor CASCADE;
-DROP TABLE IF EXISTS ref_kat_dokumen_vendor CASCADE;
-DROP TABLE IF EXISTS ref_kat_item_tanya CASCADE;
-DROP TABLE IF EXISTS ref_kategori_belanja CASCADE;
-DROP TABLE IF EXISTS ref_kelompok_item_penilaian CASCADE;
-DROP TABLE IF EXISTS ref_komisaris_perusahaan CASCADE;
-DROP TABLE IF EXISTS ref_pengalaman CASCADE;
-DROP TABLE IF EXISTS ref_pengalaman_perorangan CASCADE;
-DROP TABLE IF EXISTS ref_pengalaman_sekarang CASCADE;
-DROP TABLE IF EXISTS ref_personalia_perusahaan CASCADE;
-DROP TABLE IF EXISTS ref_ppk CASCADE;
-DROP TABLE IF EXISTS ref_saham_perusahaan CASCADE;
-DROP TABLE IF EXISTS ref_sertif_perorangan CASCADE;
-DROP TABLE IF EXISTS ref_vendor CASCADE;
-DROP TABLE IF EXISTS ref_vendor_blacklist CASCADE;
-DROP TABLE IF EXISTS ref_vendor_reg_history CASCADE;
-DROP TABLE IF EXISTS ref_vendor_register CASCADE;
-DROP TABLE IF EXISTS trx_eval_vendor CASCADE;
-DROP TABLE IF EXISTS trx_jawab_item CASCADE;
-DROP TABLE IF EXISTS trx_jawab_profil CASCADE;
-DROP TABLE IF EXISTS trx_komen_verif CASCADE;
-DROP TABLE IF EXISTS trx_ketentuan_umum_khusus CASCADE;
-DROP TABLE IF EXISTS trx_paket CASCADE;
-DROP TABLE IF EXISTS trx_paket_item CASCADE;
-DROP TABLE IF EXISTS trx_penilaian CASCADE;
-DROP TABLE IF EXISTS trx_penjaringan CASCADE;
-DROP TABLE IF EXISTS trx_undangan_penjr CASCADE;
-DROP TABLE IF EXISTS trx_vendor_penjr CASCADE;
-DROP TABLE IF EXISTS trx_verifikator_penjr CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-
-DROP TYPE IF EXISTS status_persetujuan;
-DROP TYPE IF EXISTS status_penjaringan;
-DROP TYPE IF EXISTS metode_penjaringan;
-DROP TYPE IF EXISTS status_evaluasi;
-DROP TYPE IF EXISTS tipe_input;
-DROP TYPE IF EXISTS jenis_item;
-
 CREATE TYPE "status_persetujuan" AS ENUM (
   'belum_diproses',
   'proses',
@@ -139,6 +92,14 @@ CREATE TABLE "ref_vendor" (
   "udcr" timestamptz,
   "udch" timestamptz
 );
+
+CREATE TABLE "trx_kat_dok_komplit" (
+  "kode_dok_komplit" serial PRIMARY KEY,
+  "kode_vendor" int4,
+  "kode_kat_dokumen_vendor" int4,
+  "is_komplit" bool
+);
+
 
 CREATE TABLE "ref_kategori_belanja" (
   "kode_kategori_belanja" serial PRIMARY KEY,
@@ -273,6 +234,7 @@ CREATE TABLE "ref_direksi_perusahaan" (
 CREATE TABLE "ref_item_tanya" (
   "kode_item" serial PRIMARY KEY,
   "kode_jenis_vendor" int2,
+  "kode_kat_dokumen_vendor" int4,
   "kode_kat_item_tanya" int4,
   "urutan" int2,
   "nama_item" varchar,
@@ -285,6 +247,7 @@ CREATE TABLE "ref_item_tanya" (
   "udcr" timestamptz,
   "udch" timestamptz
 );
+
 
 CREATE TABLE "ref_kat_dokumen_vendor" (
   "kode_kat_dokumen_vendor" serial PRIMARY KEY,
