@@ -42,6 +42,12 @@ class DB_NEW
         return $res;
     }
 
+    public function fetch_object($res)
+    {
+        return pg_fetch_object($res);
+    }
+
+
     public function escape_string($string)
     {
         if (empty($string)) return null;

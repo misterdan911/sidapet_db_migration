@@ -1,11 +1,19 @@
 <?php
 
 // Truncate
-$qRefVendor = "TRUNCATE TABLE ref_vendor CASCADE";
+$qRefVendor = "TRUNCATE TABLE ref_vendor RESTART IDENTITY CASCADE";
 $dbNew->query($qRefVendor);
 echo $qRefVendor . PHP_EOL;
 
-$qTrxJawabProfil = "TRUNCATE TABLE trx_jawab_profil CASCADE";
+$qRefVendorRegister = "TRUNCATE TABLE ref_vendor_register RESTART IDENTITY CASCADE";
+$dbNew->query($qRefVendorRegister);
+echo $qRefVendorRegister . PHP_EOL;
+
+$qRefVendorRegisterHistory = "TRUNCATE TABLE ref_vendor_reg_history RESTART IDENTITY CASCADE";
+$dbNew->query($qRefVendorRegisterHistory);
+echo $qRefVendorRegisterHistory . PHP_EOL;
+
+$qTrxJawabProfil = "TRUNCATE TABLE trx_jawab_profil RESTART IDENTITY CASCADE";
 $dbNew->query($qTrxJawabProfil);
 echo $qTrxJawabProfil . PHP_EOL;
 
@@ -16,22 +24,26 @@ $res = $dbOld->query($query);
 
 while ($obj = $dbOld->fetch_object($res))
 {
+    if (empty($obj->id_user)) {
+        continue;
+    }
+
+    // ambil data user
+    $obj->email = strtolower($obj->email);
+    // $sqlUser = "SELECT email, \"password\" FROM users WHERE LOWER(email) = '$obj->email'";
+    $sqlUser = "SELECT email, \"password\" FROM users WHERE id = $obj->id_user";
+    $rsUser = $dbOld->query($sqlUser);
+    $objUser = $dbOld->fetch_object($rsUser);
+
+    echo $sqlUser . PHP_EOL;
+
+    if ($objUser == false) {
+        continue;
+    }
+
     $kode_vendor = $obj->id_profil_penyedia;
     $kode_jenis_vendor = $obj->id_jenis_penyedia;
-    $nama_perusahaan = $obj->nama;
-    // $email = str_replace("'", "", $obj->email);
-
-    // $kode_domisili = $obj->id_domisili;
-
-    /*
-    $swafoto = $obj->path_ktp;
-    if (empty($swafoto)) {
-        $swafoto = 'NULL';
-    }
-    else {
-        $swafoto = "'$swafoto'";
-    }
-    */
+    $nama_perusahaan = prepareString($dbNew, $obj->nama);
 
     $is_tetap = $obj->penyedia_terpilih;
     if ($is_tetap == 99) {
@@ -41,16 +53,23 @@ while ($obj = $dbOld->fetch_object($res))
         $is_tetap = 'TRUE';
     }
 
+    $udcr = prepareString($dbNew, $obj->create_time);
+    $udch = prepareString($dbNew, $obj->update_time);
+
     $sqlInsertRefVendor = "INSERT INTO ref_vendor (
         kode_vendor, 
         kode_jenis_vendor, 
         nama_perusahaan, 
-        is_tetap
+        is_tetap,
+        udcr,
+        udch
     ) VALUES (
         $kode_vendor,
         $kode_jenis_vendor,
-        '$nama_perusahaan',
-        $is_tetap
+        $nama_perusahaan,
+        $is_tetap,
+        $udcr,
+        $udch
     )";    
 
     $dbNew->query($sqlInsertRefVendor);
@@ -58,12 +77,121 @@ while ($obj = $dbOld->fetch_object($res))
     echo 'nama_perusahaan:' . $nama_perusahaan . PHP_EOL;
 
 
+    // Insert ke ref_vendor_register
+
+    $email = prepareString($dbNew, $objUser->email);
+    if (empty($email)) {
+        throw new Exception("Email di tabel users kosong");
+    }
+
+    $password = prepareString($dbNew, $objUser->password);
+    // die($password);
+    $nomor_handphone = "NULL";
+    $swafoto = "NULL";
+    $status_register = "'terima'";
+    $alasan_ditolak = "NULL";
+    $user_verif = "NULL";
+    $message = "NULL";
+    $similarity = "NULL";
+    $distance_percentage = "NULL";
+    $distance_point = "NULL";
+    $keypass = "NULL";
+
+    $sInsertRefVendorRegister = "INSERT INTO ref_vendor_register (
+        kode_jenis_vendor,
+        nama_perusahaan,
+        email,
+        \"password\",
+        nomor_handphone,
+        swafoto,
+        status_register,
+        alasan_ditolak,
+        user_verif,
+        udcr,
+        udch,
+        \"message\",
+        similarity,
+        distance_percentage,
+        distance_point,
+        keypass,
+        kode_vendor
+    ) VALUES (
+        $kode_jenis_vendor,
+        $nama_perusahaan,
+        $email,
+        $password,
+        $nomor_handphone,
+        $swafoto,
+        $status_register,
+        $alasan_ditolak,
+        $user_verif,
+        $udcr,
+        $udch,
+        $message,
+        $similarity,
+        $distance_percentage,
+        $distance_point,
+        $keypass,
+        $kode_vendor
+    ) RETURNING kode_register";
+
+    $resInsert =  $dbNew->query($sInsertRefVendorRegister);
+    $objInsert = $dbNew->fetch_object($resInsert);
+    $kode_register = $objInsert->kode_register;
+
+    // Insert ke ref_vendor_register_history
+    // $sInsertRefVendorRegisterHistory = str_replace('INTO ref_vendor_register', 'INTO ref_vendor_reg_history', $sInsertRefVendorRegister);
+
+    $sInsertRefVendorRegisterHistory = "INSERT INTO ref_vendor_reg_history (
+        kode_register, 
+        kode_jenis_vendor, 
+        nama_perusahaan,
+        email,
+        \"password\",
+        nomor_handphone,
+        swafoto,
+        status_register,
+        alasan_ditolak,
+        user_verif,
+        udcr,
+        udch,
+        \"message\",
+        similarity,
+        distance_percentage,
+        distance_point,
+        keypass,
+        kode_vendor
+    ) VALUES (
+        $kode_register,
+        $kode_jenis_vendor,
+        $nama_perusahaan,
+        $email,
+        $password,
+        $nomor_handphone,
+        $swafoto,
+        $status_register,
+        $alasan_ditolak,
+        $user_verif,
+        $udcr,
+        $udch,
+        $message,
+        $similarity,
+        $distance_percentage,
+        $distance_point,
+        $keypass,
+        $kode_vendor
+    )";    
+
+
+    $dbNew->query($sInsertRefVendorRegisterHistory);
+
+
     // default untuk jenis_vendor 'perusahaan'
     $mapJawabItem = [
         'alamat' => ['kode_item' => 3,'isian' => $obj->alamat],
         'no_telp' => ['kode_item' => 5,'isian' => $obj->no_telp],
         ['kode_item' => 6,'isian' => $obj->no_fax],
-        'email' => ['kode_item' => 7,'isian' => $obj->email],
+        'email' => ['kode_item' => 7,'isian' => $obj->email],       // email di tabel users bisa beda dengan email di tabel tbl_profile_penyedia
         'nm_bank' => ['kode_item' => 8,'isian' => $obj->nm_bank],
         'pemilik_rek' => ['kode_item' => 9,'isian' => $obj->pemilik_rek],
         'no_rek' => ['kode_item' => 10,'isian' => $obj->no_rek],

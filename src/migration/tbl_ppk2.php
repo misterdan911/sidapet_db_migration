@@ -1,7 +1,7 @@
 <?php
 
 // Truncate
-$qRefPpk = "TRUNCATE TABLE ref_ppk CASCADE";
+$qRefPpk = "TRUNCATE TABLE ref_ppk RESTART IDENTITY CASCADE";
 $dbNew->query($qRefPpk);
 echo $qRefPpk . PHP_EOL;
 

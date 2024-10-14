@@ -1,6 +1,6 @@
 <?php
 
-$query = "TRUNCATE TABLE ref_pengalaman CASCADE";
+$query = "TRUNCATE TABLE ref_pengalaman RESTART IDENTITY CASCADE";
 $dbNew->query($query);
 echo $query . PHP_EOL;
 
@@ -9,6 +9,14 @@ $res = $dbOld->query($query);
 
 while ($obj = $dbOld->fetch_object($res))
 {
+    // cek dulu, ada gak kode_vendornya do tabel ref_vendor
+    $sqlCheckVendor = "SELECT * FROM ref_vendor WHERE kode_vendor = $obj->id_profil_penyedia";
+    $resCheckVendor = $dbNew->query($sqlCheckVendor);
+    $objCheckVendor = $dbNew->fetch_object($resCheckVendor);
+    if ($objCheckVendor == false) {
+        continue;
+    }
+
     // $kode_pengalaman10 = $obj->id_pengalaman10;
     $kode_vendor = $obj->id_profil_penyedia;
     $nm_pnglmn_10 = $dbNew->escape_string($obj->nm_pnglmn_10);
@@ -53,6 +61,14 @@ $res = $dbOld->query($query);
 
 while ($obj = $dbOld->fetch_object($res))
 {
+    // cek dulu, ada gak kode_vendornya do tabel ref_vendor
+    $sqlCheckVendor = "SELECT * FROM ref_vendor WHERE kode_vendor = $obj->id_profil_penyedia";
+    $resCheckVendor = $dbNew->query($sqlCheckVendor);
+    $objCheckVendor = $dbNew->fetch_object($resCheckVendor);
+    if ($objCheckVendor == false) {
+        continue;
+    }
+
     // $kode_pengalaman3 = $obj->id_pengalaman3;
     $kode_vendor = $obj->id_profil_penyedia;
     $nm_pnglmn_3 = $dbNew->escape_string($obj->nm_pnglmn_3);

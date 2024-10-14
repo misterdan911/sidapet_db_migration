@@ -1,6 +1,6 @@
 <?php
 
-$query = "TRUNCATE TABLE ref_ijin_usaha_perusahaan CASCADE";
+$query = "TRUNCATE TABLE ref_ijin_usaha_perusahaan RESTART IDENTITY CASCADE";
 $dbNew->query($query);
 echo $query . PHP_EOL;
 
@@ -10,18 +10,14 @@ $res = $dbOld->query($query);
 while ($obj = $dbOld->fetch_object($res))
 {
 
-    /*
-    $kode_personalia = $obj->id_ijin_usaha;
-    $kode_vendor = $obj->id_profil_penyedia;
-    $nm_personal = $dbNew->escape_string($obj->nm_personal);
-    $tgl_personal = $dbNew->escape_string($obj->tgl_personal);
-    $pendidikan_personal = $dbNew->escape_string($obj->pendidikan_personal);
-    $jbtn_personal = $dbNew->escape_string($obj->jbtn_personal);
-    $pengalaman_personal = $dbNew->escape_string($obj->pengalaman_personal);
-    $keahlian_personal = $dbNew->escape_string($obj->keahlian_personal);
-    $sertif_personal = $dbNew->escape_string($obj->sertif_personal);
-    $path_personal = $dbNew->escape_string($obj->path_personal);
-*/
+    // cek dulu, ada gak kode_vendornya do tabel ref_vendor
+    $sqlCheckVendor = "SELECT * FROM ref_vendor WHERE kode_vendor = $obj->id_profil_penyedia";
+    $resCheckVendor = $dbNew->query($sqlCheckVendor);
+    $objCheckVendor = $dbNew->fetch_object($resCheckVendor);
+    if ($objCheckVendor == false) {
+        continue;
+    }
+
 
     $kode_ijin_usaha = $obj->id_ijin_usaha;
     $kode_vendor = $obj->id_profil_penyedia;

@@ -1,7 +1,7 @@
 <?php
 
 // Truncate
-$qRefKategoriBelanja = "TRUNCATE TABLE ref_kategori_belanja CASCADE";
+$qRefKategoriBelanja = "TRUNCATE TABLE ref_kategori_belanja RESTART IDENTITY CASCADE";
 $dbNew->query($qRefKategoriBelanja);
 echo $qRefKategoriBelanja . PHP_EOL;
 

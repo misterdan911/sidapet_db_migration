@@ -1,22 +1,22 @@
 <?php
 
 // Truncate trx_paket
-$qTrxPaket = "TRUNCATE TABLE trx_paket CASCADE";
+$qTrxPaket = "TRUNCATE TABLE trx_paket RESTART IDENTITY CASCADE";
 $dbNew->query($qTrxPaket);
 echo $qTrxPaket . PHP_EOL;
 
 // Truncate trx_verifikator_penjr
-$qTrxVerPjr = "TRUNCATE TABLE trx_verifikator_penjr CASCADE";
+$qTrxVerPjr = "TRUNCATE TABLE trx_verifikator_penjr RESTART IDENTITY CASCADE";
 $dbNew->query($qTrxVerPjr);
 echo $qTrxVerPjr . PHP_EOL;
 
 // Truncate trx_vendor_penjr
-$qTrxVendorPjr = "TRUNCATE TABLE trx_vendor_penjr CASCADE";
+$qTrxVendorPjr = "TRUNCATE TABLE trx_vendor_penjr RESTART IDENTITY CASCADE";
 $dbNew->query($qTrxVendorPjr);
 echo $qTrxVendorPjr . PHP_EOL;
 
 // Truncate trx_vendor_penjr
-$qTrxEvalVendor = "TRUNCATE TABLE trx_eval_vendor CASCADE";
+$qTrxEvalVendor = "TRUNCATE TABLE trx_eval_vendor RESTART IDENTITY CASCADE";
 $dbNew->query($qTrxEvalVendor);
 echo $qTrxEvalVendor . PHP_EOL;
 

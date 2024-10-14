@@ -1,6 +1,6 @@
 <?php
 
-$query = "TRUNCATE TABLE ref_sertif_perorangan CASCADE";
+$query = "TRUNCATE TABLE ref_sertif_perorangan RESTART IDENTITY CASCADE";
 $dbNew->query($query);
 echo $query . PHP_EOL;
 

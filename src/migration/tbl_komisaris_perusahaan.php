@@ -1,6 +1,6 @@
 <?php
 
-$query = "TRUNCATE TABLE ref_komisaris_perusahaan CASCADE";
+$query = "TRUNCATE TABLE ref_komisaris_perusahaan RESTART IDENTITY CASCADE";
 $dbNew->query($query);
 echo $query . PHP_EOL;
 
@@ -9,6 +9,14 @@ $res = $dbOld->query($query);
 
 while ($obj = $dbOld->fetch_object($res))
 {
+    // cek dulu, ada gak kode_vendornya do tabel ref_vendor
+    $sqlCheckVendor = "SELECT * FROM ref_vendor WHERE kode_vendor = $obj->id_profil_penyedia";
+    $resCheckVendor = $dbNew->query($sqlCheckVendor);
+    $objCheckVendor = $dbNew->fetch_object($resCheckVendor);
+    if ($objCheckVendor == false) {
+        continue;
+    }
+
     $kode_komisaris = $obj->id_komisaris;
     $kode_vendor = $obj->id_profil_penyedia;
     $nm_komisaris = $dbNew->escape_string($obj->nm_komisaris);
