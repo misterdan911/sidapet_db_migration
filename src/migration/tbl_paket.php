@@ -106,7 +106,7 @@ while ($obj = $dbOld->fetch_object($res))
         $status_persetujuan = "'terima'";
     }
 
-    $id_user_persetujuan = 'NULL';
+    $user_persetujuan = 'NULL';
     $alasan_ditolak = 'NULL';
 
     $tgl_daftar_awal = parseDateTime($obj->tgl_daftar_awal);
@@ -123,7 +123,7 @@ while ($obj = $dbOld->fetch_object($res))
         nama_penjaringan,
         metode,
         status_persetujuan,
-        id_user_persetujuan,
+        user_persetujuan,
         alasan_ditolak,
         tgl_daftar_awal,
         tgl_daftar_akhir,
@@ -137,7 +137,7 @@ while ($obj = $dbOld->fetch_object($res))
         '$nama_penjaringan',
         '$metode',
         $status_persetujuan,
-        $id_user_persetujuan,
+        $user_persetujuan,
         $alasan_ditolak,
         $tgl_daftar_awal,
         $tgl_daftar_akhir,
@@ -184,31 +184,44 @@ while ($obj = $dbOld->fetch_object($res))
 
 
     // migrate trx_verifikator_penjr
-    $qTblVerPaket = "SELECT * FROM tbl_verif_paket WHERE id_paket = $kode_paket ORDER BY id_verif_paket ASC";
+    $qTblVerPaket = "
+    SELECT
+        id_verif_paket,
+        users.email AS email
+    FROM tbl_verif_paket
+    LEFT JOIN users ON users.id = tbl_verif_paket.id_pegawai
+    WHERE id_paket = $kode_paket
+    ORDER BY id_verif_paket ASC";
+
+    echo 'qTblVerPaket: ' . $qTblVerPaket . PHP_EOL;
+
     $resTblVerPaket = $dbOld->query($qTblVerPaket);
 
     $arrVerif = [];
 
     while ($objTblVerPaket = $dbOld->fetch_object($resTblVerPaket))
     {
+        if (empty($objTblVerPaket->email)) {
+            continue;
+        }
+
         $kode_verifikator_penjr = $objTblVerPaket->id_verif_paket;
         $kode_penjaringan = $kode_penjaringan;
-        $id_user = $objTblVerPaket->id_pegawai;
+        $user_verif = prepareString($dbNew, $objTblVerPaket->email);
 
-
-        $qTrxVerPjr = "INSERT INTO trx_verifikator_penjr (kode_verifikator_penjr, kode_penjaringan, id_user)
+        $qTrxVerPjr = "INSERT INTO trx_verifikator_penjr (kode_verifikator_penjr, kode_penjaringan, user_verif)
         VALUES (
             $kode_verifikator_penjr,
             $kode_penjaringan,
-            $id_user
+            $user_verif
         )";
 
 
         $dbNew->query($qTrxVerPjr);
 
-        echo 'verifikator_ditunjuk: ' . $id_user . PHP_EOL;
+        echo 'verifikator_ditunjuk: ' . $user_verif . PHP_EOL;
 
-        $arrVerif[] = $id_user;
+        $arrVerif[] = $user_verif;
     }
 
 
@@ -280,7 +293,7 @@ while ($obj = $dbOld->fetch_object($res))
 
         // migrate trx_eval_vendor
         $kode_vendor_penjr = $rowTrxVendorPjr['0'];
-        $id_user = $arrVerif[0];
+        $user_verif = $arrVerif[0];
         $scan_visitasi_datadiri = 'NULL';
         $scan_visitasi_administrasi = 'NULL';
         $scan_visitasi_teknis = 'NULL';
@@ -288,10 +301,10 @@ while ($obj = $dbOld->fetch_object($res))
         $is_terima = $is_terpilih;
         $alasan_tolak = 'NULL';
 
-        $qTrxEvalVendor = "INSERT INTO trx_eval_vendor (kode_vendor_penjr, id_user, scan_visitasi_datadiri, scan_visitasi_administrasi, scan_visitasi_teknis, scan_visitasi_keuangan, is_terima, alasan_tolak)
+        $qTrxEvalVendor = "INSERT INTO trx_eval_vendor (kode_vendor_penjr, user_verif, scan_visitasi_datadiri, scan_visitasi_administrasi, scan_visitasi_teknis, scan_visitasi_keuangan, is_terima, alasan_tolak)
         VALUES (
             $kode_vendor_penjr,
-            $id_user,
+            $user_verif,
             $scan_visitasi_datadiri,
             $scan_visitasi_administrasi,
             $scan_visitasi_teknis,
@@ -390,15 +403,15 @@ while ($obj = $dbOld->fetch_object($res))
         foreach ($arrNilai as $nilai) {
 
             $kode_eval_vendor = $rowTrxEvalVendor[0];
-            $id_user = $id_user;
+            $user_verif = $user_verif;
             $kode_kelompok_item_penilaian = $nilai['kode_kelompok_item_penilaian'];
             $kode_item_penilaian = $nilai['kode_item_penilaian'];
             $nilai = $nilai['nilai'];
 
-            $sInsertTrxNilai = "INSERT INTO trx_penilaian (kode_eval_vendor, id_user, kode_kelompok_item_penilaian, kode_item_penilaian, nilai)
+            $sInsertTrxNilai = "INSERT INTO trx_penilaian (kode_eval_vendor, user_verif, kode_kelompok_item_penilaian, kode_item_penilaian, nilai)
             VALUES (
                 $kode_eval_vendor,
-                $id_user,
+                $user_verif,
                 $kode_kelompok_item_penilaian,
                 $kode_item_penilaian,
                 '$nilai'

@@ -53,8 +53,8 @@ CREATE TABLE "ref_vendor_register" (
   "status_register" status_persetujuan,
   "alasan_ditolak" varchar,
   "user_verif" varchar,
-  "udcr" timestamp,
-  "udch" timestamp,
+  "udcr" timestamptz,
+  "udch" timestamptz,
   "message" varchar,
   "similarity" varchar,
   "distance_percentage" decimal,
@@ -100,13 +100,21 @@ CREATE TABLE "trx_kat_dok_komplit" (
   "is_komplit" bool
 );
 
+CREATE TABLE "ref_vendor_blacklist" (
+  "kode_blacklist" int PRIMARY KEY,
+  "kode_vendor" int,
+  "alasan" varchar,
+  "is_permanen" bool,
+  "tanggal_awal" timestamptz,
+  "tanggal_akhir" timestamptz
+);
 
 CREATE TABLE "ref_kategori_belanja" (
   "kode_kategori_belanja" serial PRIMARY KEY,
   "kode" varchar,
   "nama_kategori_belanja" varchar,
   "status_persetujuan" status_persetujuan,
-  "id_user_verif" int4,
+  "email_verif" int4,
   "waktu" timestamp,
   "udcr" timestamp
 );
@@ -129,6 +137,14 @@ CREATE TABLE "trx_paket" (
   "udcr" timestamp
 );
 
+CREATE TABLE "trx_ketentuan_umum_khusus" (
+  "kode_kuk" serial PRIMARY KEY,
+  "kode_paket" int4,
+  "kode_kategori_item" int4,
+  "ket_umum" varchar,
+  "ket_khusus" varchar
+);
+
 CREATE TABLE "ref_jenis_pengadaan" (
   "kode_jenis_pengadaan" int2 PRIMARY KEY,
   "nama_j_pengadaan" varchar
@@ -140,7 +156,7 @@ CREATE TABLE "trx_penjaringan" (
   "nama_penjaringan" varchar,
   "metode" metode_penjaringan,
   "status_persetujuan" status_persetujuan,
-  "id_user_persetujuan" int4,
+  "user_persetujuan" varchar,
   "alasan_ditolak" varchar,
   "tgl_daftar_awal" timestamptz,
   "tgl_daftar_akhir" timestamptz,
@@ -162,7 +178,7 @@ CREATE TABLE "trx_undangan_penjr" (
 CREATE TABLE "trx_verifikator_penjr" (
   "kode_verifikator_penjr" int PRIMARY KEY,
   "kode_penjaringan" int,
-  "id_user" int
+  "user_verif" varchar
 );
 
 CREATE TABLE "trx_vendor_penjr" (
@@ -179,7 +195,7 @@ CREATE TABLE "trx_vendor_penjr" (
 CREATE TABLE "trx_eval_vendor" (
   "kode_eval_vendor" serial PRIMARY KEY,
   "kode_vendor_penjr" int,
-  "id_user" int,
+  "user_verif" varchar,
   "scan_visitasi_datadiri" varchar,
   "scan_visitasi_administrasi" varchar,
   "scan_visitasi_teknis" varchar,
@@ -204,19 +220,10 @@ CREATE TABLE "ref_item_penilaian" (
 CREATE TABLE "trx_penilaian" (
   "kode_penilaian" serial PRIMARY KEY,
   "kode_eval_vendor" int4,
-  "id_user" int4,
+  "user_verif" varchar,
   "kode_kelompok_item_penilaian" int2,
   "kode_item_penilaian" int2,
   "nilai" varchar
-);
-
-CREATE TABLE "ref_vendor_blacklist" (
-  "kode_blacklist" int PRIMARY KEY,
-  "kode_vendor" int,
-  "alasan" varchar,
-  "is_permanen" bool,
-  "tanggal_awal" timestamptz,
-  "tanggal_akhir" timestamptz
 );
 
 CREATE TABLE "ref_direksi_perusahaan" (
@@ -238,7 +245,8 @@ CREATE TABLE "ref_item_tanya" (
   "kode_kat_item_tanya" int4,
   "urutan" int2,
   "nama_item" varchar,
-  "keterangan" varchar,
+  "keterangan" text,
+  "nama_unik" varchar UNIQUE,
   "tipe_input" tipe_input,
   "metadata" json,
   "jenis_item" jenis_item,
@@ -247,7 +255,6 @@ CREATE TABLE "ref_item_tanya" (
   "udcr" timestamptz,
   "udch" timestamptz
 );
-
 
 CREATE TABLE "ref_kat_dokumen_vendor" (
   "kode_kat_dokumen_vendor" serial PRIMARY KEY,
@@ -292,7 +299,7 @@ CREATE TABLE "trx_komen_verif" (
   "kode_komen_verif" serial PRIMARY KEY,
   "kode_vendor" int4,
   "kode_kategori_item" int4,
-  "id_user" int4,
+  "user_verif" int4,
   "komentar" varchar
 );
 
@@ -316,7 +323,6 @@ CREATE TABLE "ref_ppk" (
   "nomor_ppkualitas" varchar,
   "aktif_ppk" varchar
 );
-
 
 CREATE TABLE "ref_domisili" (
   "kode_domisili" int4 PRIMARY KEY,
@@ -455,12 +461,25 @@ CREATE TABLE "ref_saham_perusahaan" (
   "custom" jsonb
 );
 
-CREATE TABLE "trx_ketentuan_umum_khusus" (
-  "kode_kuk" serial PRIMARY KEY,
-  "kode_paket" int4,
-  "kode_kategori_item" int4,
-  "ket_umum" varchar,
-  "ket_khusus" varchar
+CREATE TABLE "users" (
+  "id" SERIAL PRIMARY KEY,
+  "name" varchar,
+  "id_level" int,
+  "email" varchar(100),
+  "email_real" varchar(100),
+  "password" varchar(255),
+  "is_ppk" int,
+  "is_pp" int,
+  "is_pkualitas" int,
+  "is_tutor" varchar(1),
+  "undang" int,
+  "internasional" int,
+  "remember_token" varchar(100),
+  "created_at" timestamp,
+  "updated_at" timestamp,
+  "email_verified_at" timestamp,
+  "andro_user" varchar(255),
+  "andro_password" varchar(255)
 );
 
 COMMENT ON TABLE "ref_vendor_register" IS 'Vendor yang baru register ditampung disini dulu untuk diverifikasi';
@@ -479,7 +498,9 @@ COMMENT ON TABLE "ref_vendor" IS 'Vendor yang lolos verifikasi registrasi, disim
 
 COMMENT ON COLUMN "ref_vendor"."is_tetap" IS 'nilai defaultnya ''false'' kalau berhasil menjadi vendor yang terpilih ''is_tetap'' berubah jadi ''true''';
 
-COMMENT ON COLUMN "ref_kategori_belanja"."id_user_verif" IS 'User yang menerima atau menolak pengajuan kategori belanja';
+COMMENT ON TABLE "trx_kat_dok_komplit" IS 'Flag penanda bahwa vendor telah melengkapi pengisian dokumen pada step tertentu';
+
+COMMENT ON COLUMN "ref_kategori_belanja"."email_verif" IS 'User yang menerima atau menolak pengajuan kategori belanja';
 
 COMMENT ON COLUMN "trx_paket"."ket_lainya" IS 'Kalau dipilih jenis pengadaan ''Lainya'' ini harus diisi';
 
@@ -487,7 +508,7 @@ COMMENT ON COLUMN "trx_paket"."ucr" IS 'Email User yang membuat paket';
 
 COMMENT ON COLUMN "trx_penjaringan"."status_persetujuan" IS 'Flag pengajuan paket diterima atau tidak';
 
-COMMENT ON COLUMN "trx_penjaringan"."id_user_persetujuan" IS 'User yang menerima atau menolak pengajuan penjaringan';
+COMMENT ON COLUMN "trx_penjaringan"."user_persetujuan" IS 'Email user yang menerima atau menolak pengajuan penjaringan';
 
 COMMENT ON COLUMN "trx_undangan_penjr"."kode_und_penjr" IS 'kode undangan penjaringan';
 
@@ -495,104 +516,27 @@ COMMENT ON TABLE "trx_verifikator_penjr" IS 'verifikator yang dapat surat tugas 
 
 COMMENT ON COLUMN "trx_verifikator_penjr"."kode_verifikator_penjr" IS 'kode verifikator penjaringan';
 
-COMMENT ON COLUMN "trx_verifikator_penjr"."id_user" IS 'id user verifikator';
+COMMENT ON COLUMN "trx_verifikator_penjr"."user_verif" IS 'email user verifikator';
 
 COMMENT ON TABLE "trx_vendor_penjr" IS 'mencatat vendor yang memilih paket';
 
 COMMENT ON COLUMN "trx_vendor_penjr"."nilai_total" IS 'baru terisi setelah proses perankingan';
 
-COMMENT ON COLUMN "trx_eval_vendor"."id_user" IS 'id user Verifikator';
+COMMENT ON COLUMN "trx_eval_vendor"."user_verif" IS 'id user Verifikator';
 
 COMMENT ON COLUMN "trx_eval_vendor"."is_terima" IS 'Status vendor';
 
 COMMENT ON TABLE "ref_item_penilaian" IS 'Item2 penilaian per jenis vendor';
 
-COMMENT ON COLUMN "trx_penilaian"."id_user" IS 'id user verifikator';
+COMMENT ON COLUMN "trx_penilaian"."user_verif" IS 'Email user verifikator';
+
+COMMENT ON COLUMN "ref_item_tanya"."nama_unik" IS 'isi dengan huruf kecil semua dan tidak pakai spasi';
 
 COMMENT ON COLUMN "ref_kat_dokumen_vendor"."main_kat" IS 'nyambung ke field kode_kat_dokumen_vendor';
 
-COMMENT ON COLUMN "trx_komen_verif"."id_user" IS 'id user verifikator';
+COMMENT ON COLUMN "trx_komen_verif"."user_verif" IS 'email user verifikator';
+
+COMMENT ON COLUMN "ref_ppk"."user_email" IS 'Email user dari aplikasi User Manager';
 
 COMMENT ON COLUMN "ref_ppk"."id_cn" IS 'Ini apa ?';
 
-ALTER TABLE "ref_vendor_register" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_vendor_reg_history" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_vendor_blacklist" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "trx_jawab_profil" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_cabang_ut" ADD FOREIGN KEY ("kode_ppk") REFERENCES "ref_ppk" ("kode_ppk");
-
-ALTER TABLE "trx_penjaringan" ADD FOREIGN KEY ("kode_paket") REFERENCES "trx_paket" ("kode_paket");
-
-ALTER TABLE "trx_undangan_penjr" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
-
-ALTER TABLE "trx_verifikator_penjr" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
-
-ALTER TABLE "trx_vendor_penjr" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
-
-ALTER TABLE "trx_paket" ADD FOREIGN KEY ("kode_jenis_pengadaan") REFERENCES "ref_jenis_pengadaan" ("kode_jenis_pengadaan");
-
-ALTER TABLE "trx_eval_vendor" ADD FOREIGN KEY ("kode_vendor_penjr") REFERENCES "trx_vendor_penjr" ("kode_vendor_penjr");
-
-ALTER TABLE "trx_vendor_penjr" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_direksi_perusahaan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "trx_ketentuan_umum_khusus" ADD FOREIGN KEY ("kode_paket") REFERENCES "trx_paket" ("kode_paket");
-
-ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("kode_kat_item_tanya") REFERENCES "ref_kat_item_tanya" ("kode_kat_item_tanya");
-
-ALTER TABLE "trx_paket_item" ADD FOREIGN KEY ("kode_item") REFERENCES "ref_item_tanya" ("kode_item");
-
-ALTER TABLE "trx_jawab_profil" ADD FOREIGN KEY ("kode_item") REFERENCES "ref_item_tanya" ("kode_item");
-
-ALTER TABLE "trx_jawab_item" ADD FOREIGN KEY ("kode_trx_paket_item") REFERENCES "trx_paket_item" ("kode_trx_paket_item");
-
-ALTER TABLE "trx_paket_item" ADD FOREIGN KEY ("kode_paket") REFERENCES "trx_paket" ("kode_paket");
-
-ALTER TABLE "trx_paket" ADD FOREIGN KEY ("kode_kategori_belanja") REFERENCES "ref_kategori_belanja" ("kode_kategori_belanja");
-
-ALTER TABLE "trx_paket" ADD FOREIGN KEY ("kode_cabang_ut") REFERENCES "ref_cabang_ut" ("kode_cabang_ut");
-
-ALTER TABLE "trx_jawab_item" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_vendor_register" ADD FOREIGN KEY ("kode_jenis_vendor") REFERENCES "ref_jenis_vendor" ("kode_jenis_vendor");
-
-ALTER TABLE "ref_vendor" ADD FOREIGN KEY ("kode_jenis_vendor") REFERENCES "ref_jenis_vendor" ("kode_jenis_vendor");
-
-ALTER TABLE "ref_pengalaman_perorangan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_sertif_perorangan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_ijin_usaha_perusahaan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_akta_perusahaan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_fasilitas_perusahaan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_komisaris_perusahaan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_personalia_perusahaan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_pengalaman_sekarang" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "ref_saham_perusahaan" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "trx_komen_verif" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
-
-ALTER TABLE "trx_komen_verif" ADD FOREIGN KEY ("kode_kategori_item") REFERENCES "ref_kat_item_tanya" ("kode_kat_item_tanya");
-
-ALTER TABLE "trx_penilaian" ADD FOREIGN KEY ("kode_eval_vendor") REFERENCES "trx_eval_vendor" ("kode_eval_vendor");
-
-ALTER TABLE "trx_penilaian" ADD FOREIGN KEY ("kode_item_penilaian") REFERENCES "ref_item_penilaian" ("kode_item_penilaian");
-
-ALTER TABLE "ref_item_penilaian" ADD FOREIGN KEY ("kode_kelompok_item_penilaian") REFERENCES "ref_kelompok_item_penilaian" ("kode_kelompok_item_penilaian");
-
-ALTER TABLE "ref_kat_dokumen_vendor" ADD FOREIGN KEY ("kode_jenis_vendor") REFERENCES "ref_jenis_vendor" ("kode_jenis_vendor");
-
-ALTER TABLE "ref_kat_item_tanya" ADD FOREIGN KEY ("kode_kat_dokumen_vendor") REFERENCES "ref_kat_dokumen_vendor" ("kode_kat_dokumen_vendor");
-
-ALTER TABLE "ref_pengalaman" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
