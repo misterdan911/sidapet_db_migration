@@ -9,7 +9,7 @@ $res = $dbOld->query($query);
 
 while ($obj = $dbOld->fetch_object($res))
 {
-    // cek dulu, ada gak kode_vendornya do tabel ref_vendor
+    // cek dulu, ada gak kode_vendornya di tabel ref_vendor
     $sqlCheckVendor = "SELECT * FROM ref_vendor WHERE kode_vendor = $obj->id_profil_penyedia";
     $resCheckVendor = $dbNew->query($sqlCheckVendor);
     $objCheckVendor = $dbNew->fetch_object($resCheckVendor);

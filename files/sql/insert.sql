@@ -1,7 +1,7 @@
 -- ----------------------------
 -- Records of ref_jenis_vendor
 -- ----------------------------
-TRUNCATE TABLE ref_jenis_vendor CASCADE;
+-- TRUNCATE TABLE ref_jenis_vendor CASCADE;
 INSERT INTO ref_jenis_vendor ("kode_jenis_vendor", "jenis_vendor") VALUES (1, 'Perusahaan');
 INSERT INTO ref_jenis_vendor ("kode_jenis_vendor", "jenis_vendor") VALUES (2, 'Perorangan');
 
@@ -11,7 +11,7 @@ INSERT INTO ref_jenis_vendor ("kode_jenis_vendor", "jenis_vendor") VALUES (2, 'P
 -- ---------------------------------
 -- Records of ref_kat_dokumen_vendor
 -- ---------------------------------
-TRUNCATE TABLE ref_kat_dokumen_vendor CASCADE;
+-- TRUNCATE TABLE ref_kat_dokumen_vendor CASCADE;
 INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (1, 1, 1, 't', 'f', NULL, 'Pakta Integritas');
 INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (2, 1, 2, 't', 'f', NULL, 'Data Diri');
 INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendor", "urutan", "is_main", "is_has_sub", "main_kat", "nama_kategori") VALUES (3, 1, 3, 't', 't', NULL, 'Administrasi dan Kualifikasi');
@@ -37,7 +37,7 @@ INSERT INTO ref_kat_dokumen_vendor ("kode_kat_dokumen_vendor", "kode_jenis_vendo
 -- ----------------------------
 -- Records of ref_kat_item_tanya
 -- ----------------------------
-TRUNCATE TABLE ref_kat_item_tanya CASCADE;
+-- TRUNCATE TABLE ref_kat_item_tanya CASCADE;
 INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (1, 1, 1, 'Pakta Integritas');
 INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (2, 2, 1, 'Identitas Perusahaan');
 INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor", "urutan", "kategori_item") VALUES (3, 2, 2, 'Bank');
@@ -66,7 +66,7 @@ INSERT INTO ref_kat_item_tanya ("kode_kat_item_tanya", "kode_kat_dokumen_vendor"
 -- ----------------------------
 -- Records of ref_item_tanya
 -- ----------------------------
-TRUNCATE TABLE ref_item_tanya CASCADE;
+-- TRUNCATE TABLE ref_item_tanya CASCADE;
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (1, 1, 1, 1, 1, 'Pakta Integritas', '<ol class="list-decimal"><li>Tidak akan melakukan praktek Korupsi, Kolusi, dan Nepotisme</li><li>Akan melaporkan kepada PA/KPA jika mengetahui terjadinya praktik Korupsi, Kolusi, dan Nepotisme dalam proses pengadaan ini</li><li>Akan mengikuti proses pengadaan secara bersih, transparan, dan profesional untuk memberikan hasil kerja terbaik sesuai ketentuan peraturan perundang-undangan dan</li><li>Apabila melanggar hal-hal yang dinyatakan dalam angka 1), 2) dan 3) maka bersedia menerima sanksi sesuai dengan peraturan perundang-undangan.</li></ol>', 'pakta_integritas_1', 'checkbox', NULL, 'default', NULL, NULL, NULL, NULL);
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (2, 1, 2, 2, 1, 'Nama Badan Usaha', NULL, NULL, 'text', NULL, 'default', NULL, NULL, NULL, NULL);
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (3, 1, 2, 2, 2, 'Domisili', NULL, NULL, 'select', '{"nama_tabel": "ref_domisili"}', 'default', NULL, NULL, NULL, NULL);
@@ -117,8 +117,8 @@ INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_k
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (48, 1, 5, 15, 3, 'Masa Berlaku Dokumen', NULL, NULL, 'checkbox', NULL, 'default', NULL, NULL, NULL, NULL);
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (49, 1, 5, 15, 4, 'Awal', NULL, NULL, 'text', NULL, 'default', NULL, NULL, NULL, NULL);
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (50, 1, 5, 15, 5, 'Akhir', NULL, NULL, 'text', NULL, 'default', NULL, NULL, NULL, NULL);
-INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (51, NULL, 15, 16, 1, 'Pakta Integritas', '<ol class="list-decimal"><li>Tidak akan melakukan praktek Korupsi, Kolusi, dan Nepotisme</li><li>Akan melaporkan kepada PA/KPA jika mengetahui terjadinya praktik Korupsi, Kolusi, dan Nepotisme dalam proses pengadaan ini</li><li>Akan mengikuti proses pengadaan secara bersih, transparan, dan profesional untuk memberikan hasil kerja terbaik sesuai ketentuan peraturan perundang-undangan dan</li><li>Apabila melanggar hal-hal yang dinyatakan dalam angka 1), 2) dan 3) maka bersedia menerima sanksi sesuai dengan peraturan perundang-undangan.</li></ol>', 'pakta_integritas_2', 'checkbox', NULL, 'default', NULL, NULL, NULL, NULL);
-INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (52, NULL, 16, 17, 1, 'Nama Badan Usaha', NULL, NULL, 'text', NULL, 'default', NULL, NULL, NULL, NULL);
+INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (51, 2, 15, 16, 1, 'Pakta Integritas', '<ol class="list-decimal"><li>Tidak akan melakukan praktek Korupsi, Kolusi, dan Nepotisme</li><li>Akan melaporkan kepada PA/KPA jika mengetahui terjadinya praktik Korupsi, Kolusi, dan Nepotisme dalam proses pengadaan ini</li><li>Akan mengikuti proses pengadaan secara bersih, transparan, dan profesional untuk memberikan hasil kerja terbaik sesuai ketentuan peraturan perundang-undangan dan</li><li>Apabila melanggar hal-hal yang dinyatakan dalam angka 1), 2) dan 3) maka bersedia menerima sanksi sesuai dengan peraturan perundang-undangan.</li></ol>', 'pakta_integritas_2', 'checkbox', NULL, 'default', NULL, NULL, NULL, NULL);
+INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (52, 2, 16, 17, 1, 'Nama Badan Usaha', NULL, NULL, 'text', NULL, 'default', NULL, NULL, NULL, NULL);
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (53, 2, 16, 17, 2, 'Domisili', NULL, NULL, 'select', '{"nama_tabel": "ref_domisili"}', 'default', NULL, NULL, NULL, NULL);
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (54, 2, 16, 17, 2, 'Alamat', NULL, NULL, 'textarea', NULL, 'default', NULL, NULL, NULL, NULL);
 INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_kat_dokumen_vendor", "kode_kat_item_tanya", "urutan", "nama_item", "keterangan", "nama_unik", "tipe_input", "metadata", "jenis_item", "ucr", "uch", "udcr", "udch") VALUES (55, 2, 16, 17, 3, 'No. Handphone', NULL, NULL, 'text', NULL, 'default', NULL, NULL, NULL, NULL);
@@ -152,14 +152,14 @@ INSERT INTO "public"."ref_item_tanya" ("kode_item", "kode_jenis_vendor", "kode_k
 
 
 
-TRUNCATE TABLE ref_kelompok_item_penilaian CASCADE;
+-- TRUNCATE TABLE ref_kelompok_item_penilaian CASCADE;
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (1, 'Data Diri');
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (2, 'Administrasi');
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (3, 'Teknis');
 INSERT INTO ref_kelompok_item_penilaian ("kode_kelompok_item_penilaian", "nama_kelompok") VALUES (4, 'Keuangan');
 
 
-TRUNCATE TABLE ref_item_penilaian CASCADE;
+-- TRUNCATE TABLE ref_item_penilaian CASCADE;
 INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (1, 1, 'Data Diri', 't', 't');
 INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (2, 2, 'Administrasi', 'f', 't');
 INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (3, 2, 'Landasan Hukum Pendirian Badan Usaha', 't', 'f');
@@ -176,7 +176,7 @@ INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penil
 INSERT INTO ref_item_penilaian ("kode_item_penilaian", "kode_kelompok_item_penilaian", "nama_item", "perusahaan", "perorangan") VALUES (14, 4, 'Keuangan', 't', 'f');
 
 
-TRUNCATE TABLE ref_ppk CASCADE;
+-- TRUNCATE TABLE ref_ppk CASCADE;
 INSERT INTO ref_ppk ("kode_ppk", "user_email", "nama_anggota", "nip_ppk", "uraian_jabatan", "id_cn", "kode_unit", "nomor_ppkualitas", "aktif_ppk") VALUES (1, 'adrian@ecampus.ut.ac.id', 'Adrian Sutawijaya, S.E., M.Si.', 197705032002121002, 'PPK-PBJ Kegiatan Strategis dan Pelaksana Tugas Lain Universitas', '167', '11.0401.129', '', '');
 INSERT INTO ref_ppk ("kode_ppk", "user_email", "nama_anggota", "nip_ppk", "uraian_jabatan", "id_cn", "kode_unit", "nomor_ppkualitas", "aktif_ppk") VALUES (2, 'ali@ecampus.ut.ac.id', 'Ali Muktiyanto', 197208242000121001, 'PPK-PBJ Kegiatan Pendukung Fakultas Ekonomi', '166', '11.0401.128', '', '');
 INSERT INTO ref_ppk ("kode_ppk", "user_email", "nama_anggota", "nip_ppk", "uraian_jabatan", "id_cn", "kode_unit", "nomor_ppkualitas", "aktif_ppk") VALUES (3, 'sofjan@ecampus.ut.ac.id', 'Sofjan Aripin', 196606191992031002, 'PPK-PBJ Kegiatan Pendukung Fakultas Hukum, Ilmu Sosial dan Ilmu Politik', '165', '11.0401.127', '', '');
@@ -264,7 +264,7 @@ INSERT INTO ref_ppk ("kode_ppk", "user_email", "nama_anggota", "nip_ppk", "uraia
 INSERT INTO ref_ppk ("kode_ppk", "user_email", "nama_anggota", "nip_ppk", "uraian_jabatan", "id_cn", "kode_unit", "nomor_ppkualitas", "aktif_ppk") VALUES (85, 'ariefrs@ecampus.ut.ac.id', 'Arief Rahman Susila, S.E., M.Si.', 198202132005011002, 'PPK-PBJ Kegiatan Pengiriman Bahan Ajar dan Bahan Ujian', '28', '11.0401.115', '', '');
 
 
-TRUNCATE TABLE ref_cabang_ut CASCADE;
+-- TRUNCATE TABLE ref_cabang_ut CASCADE;
 INSERT INTO ref_cabang_ut ("kode_cabang_ut", "kode_ppk", "upbjj_ut", "cabang_ut", "alamat_ut", "website") VALUES (1, 24, 'Unit Program Belajar Jarak Jauh (UPBJJ-UT) Banda Aceh', 'UPBJJ-UT Banda Aceh', 'Jl. Pendidikan No.1a, Punge Blang Cut, Kec. Jaya Baru, Kota Banda Aceh, Aceh 23234 <br>
 Telp. 0651-44749, 44750
 Faks. 0651-44757 <br>
