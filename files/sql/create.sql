@@ -243,6 +243,11 @@ CREATE TABLE "ref_direksi_perusahaan" (
   "custom" jsonb
 );
 
+CREATE TABLE "ref_tipe_input" (
+  "tipe_input" varchar PRIMARY KEY,
+  "regex_validation" varchar
+);
+
 CREATE TABLE "ref_item_tanya" (
   "kode_item" serial PRIMARY KEY,
   "kode_jenis_vendor" int2,
@@ -252,7 +257,8 @@ CREATE TABLE "ref_item_tanya" (
   "nama_item" varchar,
   "keterangan" text,
   "nama_unik" varchar UNIQUE,
-  "tipe_input" tipe_input,
+  "tipe_input" varchar,
+  "is_required" bool,
   "metadata" json,
   "jenis_item" jenis_item,
   "ucr" varchar,

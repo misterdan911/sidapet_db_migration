@@ -83,3 +83,5 @@ ALTER TABLE "ref_pengalaman" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_ven
 ALTER TABLE "trx_kat_dok_komplit" ADD FOREIGN KEY ("kode_kat_dokumen_vendor") REFERENCES "ref_kat_dokumen_vendor" ("kode_kat_dokumen_vendor");
 
 ALTER TABLE "trx_kat_dok_komplit" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
+
+ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("tipe_input") REFERENCES "ref_tipe_input" ("tipe_input");
