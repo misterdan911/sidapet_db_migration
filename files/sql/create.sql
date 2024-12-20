@@ -109,33 +109,30 @@ CREATE TABLE "ref_vendor_blacklist" (
   "tanggal_akhir" timestamptz
 );
 
-CREATE TABLE "ref_kategori_belanja" (
-  "kode_kategori_belanja" serial PRIMARY KEY,
-  "kode" varchar,
-  "nama_kategori_belanja" varchar,
-  "status_persetujuan" status_persetujuan,
-  "email_verif" int4,
-  "waktu" timestamp,
-  "udcr" timestamp
+
+CREATE TABLE "ref_kategori" (
+  "kode_kategori" serial PRIMARY KEY,
+  "nama_kategori" varchar
 );
 
-CREATE TABLE "trx_paket" (
-  "kode_paket" serial PRIMARY KEY,
+CREATE TABLE "trx_kategori" (
+  "kode_trx_kategori" serial PRIMARY KEY,
+  "kode_kategori" int4,
   "kode_cabang_ut" int4,
-  "kode_kategori_belanja" int4,
-  "nama_paket" varchar,
+  "keperluan" varchar,
   "kode_jenis_pengadaan" int2,
-  "ket_lainya" varchar,
   "is_kualifikasi_k" bool,
   "is_kualifikasi_m" bool,
   "is_kualifikasi_b" bool,
   "is_pembuka" bool,
   "teks_pembuka" text,
+  "status_pengajuan_kat" status_pengajuan_kat,
   "ucr" varchar,
   "uch" varchar,
   "udch" timestamp,
   "udcr" timestamp
 );
+
 
 CREATE TABLE "trx_ketentuan_umum_khusus" (
   "kode_kuk" serial PRIMARY KEY,
@@ -303,8 +300,10 @@ CREATE TABLE "trx_jawab_profil" (
 CREATE TABLE "trx_jawab_item" (
   "kode_trx_jawab_item" serial PRIMARY KEY,
   "kode_vendor" int4,
-  "kode_trx_paket_item" int4,
-  "isian" varchar
+  "kode_item" int4,
+  "kode_paket" int4,
+  "isian" varchar,
+  "encrypt_key" varchar
 );
 
 CREATE TABLE "trx_komen_verif" (
@@ -504,6 +503,13 @@ CREATE TABLE "users" (
   "andro_user" varchar(255),
   "andro_password" varchar(255)
 );
+
+CREATE TABLE "helper_kategori_kw" (
+  "id" serial PRIMARY KEY,
+  "keyword" varchar,
+  "kode_kategori" int4
+);
+
 
 COMMENT ON TABLE "ref_vendor_register" IS 'Vendor yang baru register ditampung disini dulu untuk diverifikasi';
 
