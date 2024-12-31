@@ -149,7 +149,7 @@ CREATE TABLE "ref_jenis_pengadaan" (
 
 CREATE TABLE "trx_penjaringan" (
   "kode_penjaringan" serial PRIMARY KEY,
-  "kode_paket" int4,
+  "kode_trx_kategori" int4,
   "nama_penjaringan" varchar,
   "metode" metode_penjaringan,
   "status_persetujuan" status_persetujuan,
@@ -161,6 +161,7 @@ CREATE TABLE "trx_penjaringan" (
   "tgl_evaluasi_akhir" timestamptz,
   "tgl_pengumuman" timestamptz,
   "s_tugas_dibuat" bool,
+  "file_s_tugas" varchar,
   "udcr" timestamptz
 );
 
@@ -508,6 +509,7 @@ CREATE TABLE "helper_kategori_kw" (
   "id" serial PRIMARY KEY,
   "keyword" varchar,
   "kode_kategori" int4
+  "kode_jenis_pengadaan" int4
 );
 
 
