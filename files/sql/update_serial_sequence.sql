@@ -27,4 +27,4 @@ SELECT setval('trx_penilaian_kode_penilaian_seq', (SELECT MAX(kode_penilaian) FR
 SELECT setval('trx_penjaringan_kode_penjaringan_seq', (SELECT MAX(kode_penjaringan) FROM trx_penjaringan));
 SELECT setval('trx_undangan_penjr_kode_und_penjr_seq', (SELECT MAX(kode_und_penjr) FROM trx_undangan_penjr));
 SELECT setval('trx_vendor_penjr_kode_vendor_penjr_seq', (SELECT MAX(kode_vendor_penjr) FROM trx_vendor_penjr));
-SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+
