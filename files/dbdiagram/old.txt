@@ -1,0 +1,126 @@
+Table ref_personalia_perusahaan_old {
+  kode_personalia serial [pk]
+  kode_vendor int
+  nm_personal varchar(100)
+  tgl_personal varchar
+  pendidikan_personal varchar
+  jbtn_personal varchar
+  pengalaman_personal varchar
+  keahlian_personal varchar
+  sertif_personal varchar
+  path_personal varchar
+  encrypt_key varchar
+  custom jsonb
+}
+
+
+Table ref_ijin_usaha_perusahaan_old {
+  kode_ijin_usaha serial [pk]
+  kode_vendor int4
+  nama_izin varchar
+  no_izin varchar
+  masa_izin varchar
+  pemberi_izin varchar
+  kualifikasi_usaha varchar
+  klasifikasi_usaha varchar
+  tdp varchar
+  path_izin varchar
+  encrypt_key varchar
+  custom jsonb
+}
+
+
+Table ref_pengalaman_sekarang {
+  kode_pengalaman_sekarang serial [pk]
+  kode_vendor int
+  nm_pnglmn_sekarang text
+  div_pnglmn_sekarang text
+  ringkas_pnglmn_sekarang text
+  lok_pnglmn_sekarang varchar
+  pemberi_pnglmn_sekarang varchar
+  alamat_pnglmn_sekarang varchar
+  tgl_pnglmn_sekarang varchar
+  nilai_pnglmn_sekarang varchar
+  status_pnglmn_sekarang varchar
+  kontrak_pnglmn_sekarang varchar
+  prestasi_pnglmn_sekarang varchar
+  path_pnglmn_skrg varchar
+  encrypt_key varchar
+  custom jsonb
+}
+
+
+Table ref_pengalaman {
+  kode_pengalaman serial [pk]
+  kode_vendor int
+  nm_pnglmn text
+  div_pnglmn text
+  ringkas_pnglmn text
+  lok_pnglmn varchar
+  pemberi_pnglmn varchar
+  alamat_pnglmn varchar
+  tgl_pnglmn varchar
+  nilai_pnglmn varchar
+  status_pnglmn varchar
+  tgl_selesai_pnglmn varchar
+  ba_pnglmn varchar
+  path_pnglmn varchar
+  encrypt_key varchar
+  custom jsonb
+}
+
+
+
+Table ref_akta_perusahaan {
+  kode_akta int [pk, not null, increment]
+  kode_vendor int
+  no_akta varchar
+  tgl_akta varchar
+  nota_akta varchar
+  no_sah_akta varchar
+  path_akta varchar [default: NULL]
+  path_akta_encrypt_key varchar
+  no_akta_akhir varchar
+  tgl_akta_akhir varchar
+  nota_akta_akhir varchar
+  bukti_rubah_akta varchar
+  path_akta_akhir varchar [default: NULL]
+  path_akta_akhir_encrypt_key varchar
+  custom jsonb
+}
+
+
+Table ref_fasilitas_perusahaan_old {
+  kode_peralatan int [pk, not null, increment]
+  kode_vendor int
+  nm_fasilitas varchar(100)
+  jumlah_fasilitas varchar(50)
+  fasilitas_now varchar(255)
+  merk_fasilitas varchar(255)
+  tahun_fasilitas varchar(4)
+  kondisi_fasilitas kondisi_barang
+  lokasi_fasilitas varchar
+  path_fasilitas varchar
+  encrypt_key varchar
+  custom jsonb
+}
+
+
+Table ref_pengalaman_perorangan_old
+ {
+  kode_pengalaman serial [pk]
+  kode_vendor int
+  nm_pnglmn_org varchar
+  path_pnglmn varchar
+  encrypt_key varchar
+  custom jsonb
+}
+
+Table ref_sertif_perorangan_old {
+  kode_sertif serial [pk]
+  kode_vendor int4
+  nm_sertif_orang varchar
+  path_sertif varchar
+  encrypt_key varchar
+  custom jsonb
+}
