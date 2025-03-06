@@ -1,162 +1,346 @@
-Table db_sidapet.ref_jenis_vendor {
-  kode_jenis_vendor int2 [pk]
-  jenis_vendor varchar
-}
-
-Table db_sidapet.ref_vendor_register {
-  kode_register serial [pk]
-  kode_jenis_vendor int2
-  nama_perusahaan varchar
-  email varchar
-  password varchar
-  nomor_handphone varchar
-  swafoto varchar
-  status_register db_sidapet.status_persetujuan [note: "status akun yang baru daftar"]
-  alasan_ditolak varchar
-  id_user_verif int4 [note: "User ID yang memverifikasi"]
-  udcr timestamp
-  udch timestamp
-
-  note: "Vendor yang baru register ditampung disini dulu untuk diverifikasi"
-}    
-
-Table db_sidapet.ref_vendor_reg_history {
-  kode_register serial [pk]
-  kode_jenis_vendor int2
-  nama_perusahaan varchar
-  email varchar
-  password varchar
-  nomor_handphone varchar
-  swafoto varchar
-  status_register db_sidapet.status_persetujuan [note: "status akun yang baru daftar"]
-  alasan_ditolak varchar
-  id_user_verif int4 [note: "User ID yang memverifikasi"]
-  udcr timestamp
-  udch timestamp
-
-  note: "Vendor yang baru register ditampung disini dulu untuk diverifikasi"
-}    
-
-Table db_sidapet.ref_vendor {
-  kode_vendor serial [pk]
-  id_user int4
-  kode_jenis_vendor int2
-  nama_perusahaan varchar(100)
-  email varchar(75)
-  kode_domisili int4 [note: 'Ambil dari tabel ref_kabkota field:kode_kabkota']
-  swafoto varchar
-  is_tetap bool [note: "kalau berhasil menjadi vendor yang terpilih 'is_tetap' otomatis jadi 'true'"]
-  udcr timestamp
-  udch timestamp
-  message varchar
-  similarity varchar
-  distance_percentage decimal
-  distance_point decimal
-  keypass varchar
- 
-  note: "Vendor yang lolos verifikasi registrasi, disimpan disini"
-}
-
-Table db_sidapet.ref_kategori_belanja {
-  kode_kategori_belanja serial [pk]
-  kode varchar
-  nama_kategori_belanja varchar
-  status_persetujuan db_sidapet.status_persetujuan
-  id_user_persetujuan int4 [note: "User yang menerima atau menolak pengajuan kategori belanja"]
-  waktu timestamp
-  udcr timestamp
-}
-
-Enum db_sidapet.status_persetujuan{
+Enum status_persetujuan {
   belum_diproses
   proses
   terima
   tolak
 }
 
+Enum metode_penjaringan {
+  pengumuman
+  undangan
+}
 
-Table db_sidapet.trx_paket {
-  kode_paket serial [pk]
-  id_user int4 [note: 'ID User yang membuat paket']
-  kode_cabang_ut int4
-  kode_kategori_belanja int4
-  nama_paket varchar
+/*
+Enum status_evaluasi {
+  belum_diproses
+  proses_verifikasi
+  perbaikan_data
+  terevaluasi
+}
+*/
+
+Enum jenis_item {
+  "default"
+  custom
+}
+
+Enum status_pengajuan_kat {
+  draft
+  proses_di_kasubdit
+  proses_di_verifikator
+  selesai
+}
+
+Enum status_pengajuan_pjr {
+  draft
+  proses_di_kasubdit
+  proses_di_verifikator
+  selesai
+}
+
+/*
+Enum sertif_pengalaman {
+  sertifikasi
+  pengalaman
+}
+*/
+
+/*
+Enum jenis_personalia {
+  tenaga_ahli
+  tenaga_pendukung
+}
+*/
+
+Enum status_vendor {
+  aktif
+  dibekukan
+  dikeluarkan
+}
+
+Enum status_proses_pjr {
+  belum_waktu_verifikasi
+  proses
+  proses_verifikasi
+  proses_evaluasi
+  selesai
+}
+
+Enum status_proses_dpt {
+  belum_diumumkan
+  diproses_ke_kasubdit
+  selesai
+}
+
+Enum status_pembuatan_s_tugas {
+  belum_diproses
+  proses_ke_direktur
+  selesai
+}
+
+
+
+
+Enum status_verifikasi {
+  belum_diproses
+  proses_verifikasi
+  perbaikan_data
+  diterima
+  ditolak
+}
+
+/*
+Enum status_dpt {
+  belum_ditetapkan
+  terpilih
+  tidak_terpilih
+}
+[note: "belum_ditetapkan, terpilih, tidak_terpilih"]
+*/
+
+Enum jenis_izin_usaha {
+  nib
+  sbu
+}
+
+Enum kondisi_barang {
+  baik
+  sedang
+  kurang_baik
+}
+
+
+Table ref_jenis_vendor {
+  kode_jenis_vendor int2 [pk]
+  jenis_vendor varchar
+}
+
+Table ref_kualifikasi_usaha {
+  kode_kualifikasi_usaha int4 [pk]
+  kualifikasi_usaha varchar(10)
+}
+
+Table ref_step_verif_memproses_pjr {
+  kode_step int4 [pk]
+  nama_step varchar(20)
+}
+
+Table trx_step_komplit_verif_memproses_pjr {
+  kode_step_complete serial [pk]
+  kode_step int4
+  kode_penjaringan int4
+}
+
+Table ref_vendor_register {
+  kode_register serial [pk]
+  kode_jenis_vendor int2
+  nama_perusahaan varchar(100)
+  email varchar(80)
+  password varchar(100)
+  nama_narahubung varchar(255) [note: 'Contact Person']
+  nomor_telp varchar(20) [note: 'Nomor telepon kantor atau rumah']
+  nomor_handphone varchar(20) [note: 'Nomor HP Whatsapp']
+  swafoto varchar(100)
+  status_register status_persetujuan [note: "status akun yang baru daftar (belum_diproses, proses, terima, tolak)"]
+  alasan_ditolak text
+  user_verif varchar(80) [note: "Email user yang memverifikasi"]
+  udcr timestamptz
+  udch timestamptz
+  message varchar(255)
+  similarity varchar(255)
+  distance_percentage decimal
+  distance_point decimal
+  keypass varchar(255)
+  kode_vendor int4 [ref: - ref_vendor.kode_vendor]
+
+  note: "Vendor yang baru register ditampung disini dulu untuk diverifikasi"
+}    
+
+Table ref_vendor_reg_history {
+  kode_register serial [pk]
+  kode_jenis_vendor int2
+  nama_perusahaan varchar(100)
+  email varchar(80)
+  password varchar(100)
+  nama_narahubung varchar(255) [note: 'Contact Person']
+  nomor_telp varchar(20) [note: 'Nomor telepon kantor atau rumah']
+  nomor_handphone varchar(20) [note: 'Nomor HP Whatsapp']
+  swafoto varchar(100)
+  status_register status_persetujuan [note: "status akun yang baru daftar (belum_diproses, proses, terima, tolak)"]
+  alasan_ditolak text
+  user_verif varchar(80) [note: "Email user yang memverifikasi"]
+  udcr timestamptz
+  udch timestamptz
+  message varchar(255)
+  similarity varchar(255)
+  distance_percentage decimal
+  distance_point decimal
+  keypass varchar(255)
+  kode_vendor int4 [ref: - ref_vendor.kode_vendor]
+
+  note: "Vendor yang sudah diverifikasi (diterima/ditolak) dicatat kesini"
+}    
+
+Table ref_vendor {
+  kode_vendor serial [pk]
+  kode_jenis_vendor int2
+  nama_perusahaan varchar(100)
+  is_tetap bool [default: false, note: "nilai defaultnya 'false' kalau berhasil menjadi vendor yang terpilih 'is_tetap' berubah jadi 'true'"]
+  is_email_verified bool [note: "Sepertinya tidak terpakai"]
+  status_vendor status_vendor [note: "aktif, dibekukan, dikeluarkan"]
+  udcr timestamptz
+  udch timestamptz
+ 
+  note: "Vendor adalah Penyedia - Vendor yang lolos verifikasi registrasi, disimpan disini"
+}
+
+Table trx_kat_dok_komplit {
+  kode_dok_komplit serial [pk]
+  kode_vendor int4
+  kode_kat_dokumen_vendor int4
+  is_komplit bool
+
+  note: 'Flag penanda bahwa vendor telah melengkapi pengisian dokumen pada step tertentu'
+}
+
+/*
+Table ref_vendor_blacklist {
+  kode_blacklist int [pk]
+  kode_vendor int [ref: - ref_vendor.kode_vendor]
+  alasan varchar
+  is_permanen bool
+  tanggal_awal timestamptz
+  tanggal_akhir timestamptz
+}
+*/
+
+Table helper_kategori_kw {
+  id serial [pk]
+  keyword varchar
+  kode_kategori int4
+  kode_jenis_pengadaan int4
+
+  note: "table sementara untuk bantu migrasi"
+}
+
+Table helper_pengusul_pjr {
+  id serial [pk]
+  nama_penjaringan varchar
+  kode_jabatan_ppk int4
+
+  note: "table sementara untuk bantu migrasi"
+}
+
+Table ref_jabatan_ppk {
+  kode_jabatan_ppk serial [pk]
+  jabatan_ppk varchar
+}
+
+
+Table ref_kategori {
+  kode_kategori serial [pk]
+  nama_kategori varchar
+
+  note: 'Daftar kategori yang bisa digunakan PPK bila ada pengajuan'
+}
+
+Table trx_kategori {
+  kode_trx_kategori serial [pk]
+  kode_kategori int4 [ref: - ref_kategori.kode_kategori]
+  keperluan varchar(150)
   kode_jenis_pengadaan int2
-  ket_lainya varchar [note: "Kalau dipilih jenis pengadaan 'Lainya' ini harus diisi"]
+  status_pengajuan_kat status_pengajuan_kat [note: 'draft, proses_di_kasubdit, proses_di_verifikator, selesai']
+  kode_unit_pbj varchar(20) [note:'Unit yang mengajukan kategori, ambil dari ???']
+  ucr varchar(80) [note: 'Email User yang membuat paket']
+  uch varchar(80)
+  udch timestamptz
+  udcr timestamptz
+
+  note: 'Paket pengadaan disebut dengan istilah "Kategori"'
+}
+
+Table trx_kat_j_vendor {
+  kode_kat_j_vendor serial [pk]
+  kode_trx_kategori int4
+  kode_jenis_vendor int2
+
+  note: 'Untuk Input "Jenis Pelaku Usaha", Tiap trx_kategori bisa memilih jenis_vendor perorangan atau badan usaha atau dua2nya'
+}
+
+
+Table trx_ketentuan_umum_khusus {
+  kode_kuk serial [pk]
+  kode_trx_kategori int4
+  kode_kat_item_tanya int4
+  ket_umum varchar
+  ket_khusus varchar
+}
+
+Table ref_jenis_pengadaan {
+  kode_jenis_pengadaan int2 [pk]
+  jenis_pengadaan varchar
+}
+
+
+Table trx_penjaringan {
+  kode_penjaringan serial [pk]
+  kode_trx_kategori int4
+  kode_cabang_ut int4
+  nama_penjaringan varchar(150)
+  metode metode_penjaringan [note: 'pengumuman, undangan']
   is_kualifikasi_k bool
   is_kualifikasi_m bool
   is_kualifikasi_b bool
   is_pembuka bool
   teks_pembuka text
-  ucr varchar
-  uch varchar
-  udch timestamp
-  udcr timestamp
+  is_catatan bool
+  teks_catatan text
+  status_persetujuan status_persetujuan [note: "Flag pengajuan paket diterima atau tidak (belum_diproses, proses, terima, tolak)"]
+  user_persetujuan varchar(80) [note: "Email user yang menerima atau menolak pengajuan penjaringan"]
+  alasan_ditolak text
+  status_pengajuan_pjr status_pengajuan_pjr [note: "draft, proses_di_kasubdit, proses_di_verifikator, selesai"]
+  status_proses_pjr status_proses_pjr [note: "belum_waktu_verifikasi, proses, proses_verifikasi, proses_evaluasi, selesai"]
+  status_pengumuman_dpt status_proses_dpt [note: "belum_diumumkan, diproses_ke_kasubdit, selesai"]
+  tgl_daftar_awal timestamptz
+  tgl_daftar_akhir timestamptz
+  tgl_verifikasi_awal timestamptz
+  tgl_verifikasi_akhir timestamptz
+  tgl_evaluasi_awal timestamptz
+  tgl_evaluasi_akhir timestamptz
+  tgl_pengumuman timestamptz
+  status_s_tugas status_pembuatan_s_tugas [note: "belum_diproses, proses_ke_direktur, selesai"]
+  file_s_tugas varchar(100)
+  ucr varchar(80) [note: 'Email User yang mengusulkan penjaringan']
+  udcr timestamptz
+  udch timestamptz
 }
 
-Table trx_ketentuan_umum_khusus {
-  kode_kuk serial [pk]
-  kode_paket int4
-  kode_kategori_item int4
-  ket_umum varchar
-  ket_khusus varchar
-}
-
-Table db_sidapet.ref_jenis_pengadaan {
-  kode_jenis_pengadaan int
-  nama_j_pengadaan varchar
-}
-
-Enum db_sidapet.status_penjaringan {
-  belum_diproses
-  diproses
-  diterima
-  ditolak
-}
-
-Table db_sidapet.trx_penjaringan {
-  kode_penjaringan serial [pk]
-  kode_paket int4
-  nama_penjaringan varchar
-  metode db_sidapet.metode_penjaringan
-  status_persetujuan db_sidapet.status_persetujuan [note: "Flag pengajuan paket diterima atau tidak"]
-  id_user_persetujuan int4 [note: "User yang menerima atau menolak pengajuan penjaringan"]
-  alasan_ditolak varchar
-  daftar_awal timestamp
-  daftar_akhir timestamp
-  evaluasi_awal timestamp
-  evaluasi_akhir timestamp
-  pengumuman timestamp
-  s_tugas_dibuat bool
-  udcr timestamp
-}
-
-Table db_sidapet.trx_undangan_penjr {
+Table trx_undangan_penjr {
   kode_und_penjr serial [pk, note: "kode undangan penjaringan"]
   kode_penjaringan int4
   nama varchar
   email varchar
+  alamat varchar
+  nama_pic varchar
+  no_hp_wa varchar
+  tgl_awal timestamptz
+  tgl_akhir timestamptz
   token varchar
 }
 
-Table db_sidapet.trx_verifikator_penjr {
+Table trx_verifikator_penjr {
   kode_verifikator_penjr int [pk, note: "kode verifikator penjaringan"]
   kode_penjaringan int
-  id_user int [note: 'id user verifikator']
+  user_verif varchar [note: 'email user verifikator']
 
   note: "verifikator yang dapat surat tugas untuk memverifikasi vendor di penjaringan"
  }
 
-Enum db_sidapet.metode_penjaringan {
-  pengumuman
-  undangan
-}
-
-Table db_sidapet.trx_vendor_penjr {
+Table trx_vendor_penjr {
   kode_vendor_penjr serial [pk]
   kode_penjaringan int4
   kode_vendor int4
-  status_evaluasi db_sidapet.status_evaluasi
+  status_verifikasi status_verifikasi [note: "belum_diproses, proses_verifikasi, perbaikan_data, diterima, ditolak"]
   is_klarifikasidibuka bool
   nilai_total float8 [note: 'baru terisi setelah proses perankingan']
   is_terpilih bool
@@ -164,31 +348,49 @@ Table db_sidapet.trx_vendor_penjr {
 
   note: 'mencatat vendor yang memilih paket'
 }
- 
-Enum db_sidapet.status_evaluasi {
-  belum_diproses
-  proses
-  terevaluasi
+
+Table trx_undangan_verif {
+  kode_undangan_verif serial [pk]
+  kode_vendor_penjr int4
+  tgl_undangan timestamptz
+  is_online bool
+  platform_konferensi varchar(100)
+  link_konferensi text
+  is_lokasi_dialamat_penyedia bool
+  lokasi varchar(255)
+
+  note: "Untuk mencatat jadwal verifikasi penyedia dengan DMAU"
 }
 
-Table db_sidapet.trx_eval_vendor {
+Table trx_tim_teknis_pendukung {
+  kode_tim_teknis_pendukung serial [pk]
+  kode_undangan_verif int4
+  email varchar(80)
+  nama varchar(150)
+}
+
+Table trx_eval_vendor {
   kode_eval_vendor serial [pk]
   kode_vendor_penjr int
-  id_user int [note: 'id user Verifikator']
+  user_verif varchar [note: 'id user Verifikator']
   scan_visitasi_datadiri varchar
   scan_visitasi_administrasi varchar
   scan_visitasi_teknis varchar
   scan_visitasi_keuangan varchar
+  scan_visitasi_datadiri_encrypt_key varchar
+  scan_visitasi_administrasi_encrypt_key varchar
+  scan_visitasi_teknis_encrypt_key varchar
+  scan_visitasi_keuangan_encrypt_key varchar
   is_terima bool [note: "Status vendor"]
   alasan_tolak varchar
 }
 
-Table db_sidapet.ref_kelompok_item_penilaian {
+Table ref_kelompok_item_penilaian {
   kode_kelompok_item_penilaian int2 [pk]
   nama_kelompok varchar
 } 
 
-Table db_sidapet.ref_item_penilaian {
+Table ref_item_penilaian {
   kode_item_penilaian int2 [pk]
   kode_kelompok_item_penilaian int2
   nama_item varchar
@@ -198,132 +400,139 @@ Table db_sidapet.ref_item_penilaian {
   note: 'Item2 penilaian per jenis vendor'
 }
 
-Table db_sidapet.trx_penilaian {
+Table trx_penilaian {
   kode_penilaian serial [pk]
   kode_eval_vendor int4
-  id_user int4 [note: 'id user verifikator']
+  user_verif varchar [note: 'Email user verifikator']
   kode_kelompok_item_penilaian int2
   kode_item_penilaian int2
   nilai varchar
 }
 
 /*
-Table db_sidapet.trx_akm_nilai_per_klmpk_item {
+Table trx_akm_nilai_per_klmpk_item {
   kode_akm_nilai serial [pk]
   kode_vendor_penjr int
-  id_user int4 [note: 'id user verifikator']
+  user_verif int4 [note: 'email user verifikator']
   kode_kelompok_item_penilaian int2
   nilai varchar
 }
 
-// Ref: "db_sidapet"."trx_vendor_penjr"."kode_vendor_penjr" < "db_sidapet"."trx_akm_nilai_per_klmpk_item"."kode_vendor_penjr"
-// Ref: "db_sidapet"."ref_kelompok_item_penilaian"."kode_kelompok_item_penilaian" < "db_sidapet"."trx_akm_nilai_per_klmpk_item"."kode_kelompok_item_penilaian"
+// Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_akm_nilai_per_klmpk_item"."kode_vendor_penjr"
+// Ref: "ref_kelompok_item_penilaian"."kode_kelompok_item_penilaian" < "trx_akm_nilai_per_klmpk_item"."kode_kelompok_item_penilaian"
 */
 
 
 
-Table db_sidapet.ref_vendor_blacklist {
-  kode_blacklist int [pk]
-  kode_vendor int [ref: - db_sidapet.ref_vendor.kode_vendor]
-  alasan varchar
-  is_permanen bool
-  tanggal_awal datetime
-  tanggal_akhir datetime
+
+
+
+
+
+Table ref_tipe_input {
+  tipe_input varchar [pk]
+  regex_validation varchar
+}
+
+Table ref_kat_dokumen_vendor {
+  kode_kat_dokumen_vendor serial [pk]
+  kode_jenis_vendor int2
+  urutan int2
+  is_main bool
+  is_has_sub bool
+  main_kat int4 [note: 'nyambung ke field kode_kat_dokumen_vendor']
+  nama_kategori varchar
+  show_on_syarat_pdf bool [default: true]
+
+  note: 'Tabel ini untuk men-Generate Step2 pengisian syarat Vendor'
 }
 
 
-
-Table db_sidapet.ref_direksi_perusahaan {
-  kode_direksi_perus serial [pk]
-  kode_vendor int4
-  nm_direksi varchar
-  jbtn_direksi varchar
-  hp_direksi varchar
-  no_ktp_direksi varchar
-  path_ktp_direksi varchar
-  status_direksi_perusahaan int2
-  custom jsonb
-}
-
-Enum db_sidapet.tipe_input {
-  "text"
-  textarea
-  select
-  checkbox
-  file
-  "table"
-}
-
-Enum db_sidapet.jenis_item {
-  "default"
-  custom
-}
-
-Table db_sidapet.ref_item_tanya {
+Table ref_item_tanya {
   kode_item serial [pk]
   kode_jenis_vendor int2
-  step_persyaratan int2
-  sub_step_persyaratan int2
-  kode_kategori_item int2
+  kode_kat_dokumen_vendor int4
+  kode_kat_item_tanya int4
+  urutan int2
   nama_item varchar
-  keterangan varchar
-  tipe_input db_sidapet.tipe_input
-  metadata json
-  jenis_item db_sidapet.jenis_item
-  ucr timestamp
-  uch timestamp
-  udcr timestamp
-  udch timestamp
+  keterangan text
+  nama_unik varchar [unique, note: 'isi dengan huruf kecil semua dan tidak pakai spasi']
+  tipe_input varchar
+  is_required bool
+  is_inline bool [default: false]
+  metadata jsonb
+  jenis_item jenis_item [note: 'default, custom']
+  kode_trx_kategori int4 [note: 'kalau jenis_item = custom maka field ini harus diisi']
+  show_on_syarat_pdf bool [default: true]
+  ucr varchar(80)
+  uch varchar
+  udcr timestamptz
+  udch timestamptz
 }
 
-Table db_sidapet.ref_kategori_item {
-  kode_kategori_item int [pk, increment]
-  nama_kategori string
-}
-
-Table db_sidapet.trx_paket_item {
-  kode_item int
-  kode_paket int
-  kode_jenis_dpt int
-  kode_persyaratan int 
-  kode_trx_paket_item int [pk, increment]
-}
-
-Table db_sidapet.trx_jawab_profil {
-  kode_jawab_profil serial [pk]
-  kode_vendor int4 [ref: - db_sidapet.ref_vendor.kode_vendor]
+Table ref_item_tanya_table_ci {
+  kode_table_ci serial [pk]
   kode_item int4
-  step_persyaratan int
+  kode_trx_kategori int4
+  custom_item jsonb
+
+  note: 'Untuk menyimpan Custom item pada item tanya yg tipe inputnya table, dibuat tabel terpisah karena custim itemnya bisa berbeda untuk tiap trx_kategori'
+}
+
+Table ref_item_tanya_tpl {
+  kode_tpl serial [pk]
+  nama_item varchar
+  keterangan text
+  tipe_input varchar
+  metadata json
+}
+
+
+Table ref_kat_item_tanya {
+  kode_kat_item_tanya serial [pk]
+  kode_kat_dokumen_vendor int4
+  urutan int2
+  kategori_item varchar
+}
+
+
+Table trx_jawab_profil {
+  kode_jawab_profil serial [pk]
+  kode_vendor int4 [ref: - ref_vendor.kode_vendor]
+  kode_item int4
   isian varchar
+  encrypt_key varchar
 }
 
-Table db_sidapet.trx_jawab_item {
+Table trx_jawab_item {
+  kode_jawab_item serial [pk]
   kode_vendor int4
-  kode_trx_paket_item int
-  kode_trx_jawab_item int [pk, increment]
-  isian string
+  kode_item int4
+  kode_trx_kategori int4
+  isian varchar
+  encrypt_key varchar
 }
 
-Table db_sidapet.komen_verif {
+Table trx_komen_verif {
   kode_komen_verif serial [pk]
   kode_vendor int4
-  kode_kategori_item int4
-  id_user int4 [note: 'id user verifikator']
+  kode_kat_item_tanya int4
+  user_verif int4 [note: 'email user verifikator']
   komentar varchar
 }
 
-Table db_sidapet.ref_cabang_ut {
+Table ref_cabang_ut {
   kode_cabang_ut serial [pk]
-  kode_ppk int [ref: - db_sidapet.ref_ppk.kode_ppk]
+  kode_ppk int [ref: - ref_ppk.kode_ppk]
   upbjj_ut varchar
   cabang_ut varchar
   alamat_ut text
   website varchar
 }
 
-Table db_sidapet.ref_ppk {
+Table ref_ppk {
   kode_ppk serial [pk]
-  id_user int4
+  user_email varchar [note: 'Email user dari aplikasi User Manager']
   nama_anggota varchar
   nip_ppk int8
   uraian_jabatan varchar
@@ -333,198 +542,498 @@ Table db_sidapet.ref_ppk {
   aktif_ppk varchar
 }
 
-Table db_sidapet.ref_domisili {
+Table ref_kab_kota {
+  kode_kab_kota varchar(5) [pk]
+  kode_provinsi varchar(5)
+  kab_kota varchar
+}
+
+Table ref_domisili {
   kode_domisili int4 [pk]
   nama_domisili varchar
 }
 
-Table db_sidapet."ref_pengalaman_perorangan" {
-  "kode_pengalaman" serial [pk]
-  "kode_vendor" int
-  "nm_pnglmn_org" varchar
-  "path_pnglmn" varchar
+Table ref_bank {
+  kode_bank serial [pk]
+  sandi_bank varchar(4)
+  nama_bank varchar(50)
+}
+
+Table ref_komisaris_perusahaan {
+  kode_komisaris serial [pk]
+  kode_vendor int4
+  nm_komisaris varchar(100)
+  jbtn_komisaris varchar(100)
+  hp_komisaris varchar(20)
+  no_ktp_komisaris varchar(20)
+  path_ktp_komisaris varchar(100)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
   custom jsonb
 }
 
-Table db_sidapet."ref_sertif_perorangan" {
-  "kode_sertif" serial [pk]
-  "kode_vendor" int4
-  "nm_sertif_orang" varchar
-  "path_sertif" varchar
+Table ref_direksi_perusahaan {
+  kode_direksi_perus serial [pk]
+  kode_vendor int4
+  nm_direksi varchar(100)
+  jbtn_direksi varchar(100)
+  hp_direksi varchar(20)
+  no_ktp_direksi varchar(20)
+  path_ktp_direksi varchar(100)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
   custom jsonb
 }
 
-Table db_sidapet."ref_ijin_usaha_perusahaan" {
-  "kode_ijin_usaha" serial [pk]
-  "kode_vendor" int4
-  "nama_izin" varchar
-  "no_izin" varchar
-  "masa_izin" varchar
-  "pemberi_izin" varchar
-  "kualifikasi_usaha" varchar
-  "klasifikasi_usaha" varchar
-  "tdp" varchar
-  "path_izin" varchar
+/*
+Table ref_izin_nib {
+  kode_izin_usaha serial [pk]
+  kode_vendor int
+  nama varchar(150)
+  nomor_izin varchar(150)
+  kode varchar [note: 'Kalau jenis izinnya NIB, masukan Kode KBLI / Kalau jenis izinnya SBU, masukan Kode SBU']
+  judul varchar(150)
+  file_izin varchar(100)
+  is_izin_selamanya bool [note:'Apakah Izin berlaku selamanya?']
+  izin_berlaku_awal timestamptz [default: null]
+  izin_berlaku_akhir timestamptz [default: null]
+  encrypt_key varchar(255)
   custom jsonb
 }
 
-Table db_sidapet."ref_akta_perusahaan" {
-  "kode_akta" int [pk, not null, increment]
-  "kode_vendor" int
-  "no_akta" varchar
-  "tgl_akta" varchar
-  "nota_akta" varchar
-  "no_sah_akta" varchar
-  "path_akta" varchar [default: NULL]
-  "no_akta_akhir" varchar
-  "tgl_akta_akhir" varchar
-  "nota_akta_akhir" varchar
-  "bukti_rubah_akta" varchar
-  "path_akta_akhir" varchar [default: NULL]
+Table ref_izin_sbu {
+  kode_izin_usaha serial [pk]
+  kode_vendor int
+  nama varchar(150)
+  nomor_izin varchar(150)
+  kode varchar [note: 'Kalau jenis izinnya NIB, masukan Kode KBLI / Kalau jenis izinnya SBU, masukan Kode SBU']
+  judul varchar(150)
+  file_izin varchar(100)
+  is_izin_selamanya bool [note:'Apakah Izin berlaku selamanya?']
+  izin_berlaku_awal timestamptz [default: null]
+  izin_berlaku_akhir timestamptz [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+}
+*/
+
+
+Table ref_izin_usaha {
+  kode_izin_usaha serial [pk]
+  kode_vendor int
+  jenis_izin_usaha jenis_izin_usaha [note: "nib, sbu"]
+  nama varchar(150)
+  nomor_izin varchar(150)
+  kode varchar [note: 'Kalau jenis izinnya NIB, masukan Kode KBLI / Kalau jenis izinnya SBU, masukan Kode SBU']
+  judul varchar(150)
+  file_izin varchar(100)
+  is_izin_selamanya bool [note:'Apakah Izin berlaku selamanya?']
+  izin_berlaku_awal date [default: null]
+  izin_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
   custom jsonb
 }
 
-Table db_sidapet."ref_fasilitas_perusahaan" {
-  "kode_peralatan" int [pk, not null, increment]
-  "kode_vendor" int
-  "nm_fasilitas" varchar
-  "jumlah_fasilitas" varchar
-  "fasilitas_now" varchar
-  "merk_fasilitas" varchar
-  "tahun_fasilitas" varchar
-  "kondisi_fasilitas" varchar
-  "lokasi_fasilitas" varchar
-  "path_fasilitas" varchar
+
+Table ref_sertifikat_usaha {
+  kode_sertifikat_usaha serial [pk]
+  kode_vendor int4
+  nama_judul varchar(150)
+  penerbit varchar(50)
+  tanggal date
+  file_sertif varchar(100)
+  is_sertif_selamanya bool [note:'Apakah sertifikat berlaku selamanya?']
+  sertif_berlaku_awal date [default: null]
+  sertif_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+}
+
+Table ref_saham_perusahaan {
+  kode_saham serial [pk]
+  kode_vendor int
+  nm_saham varchar(100) [note: 'Nama pemegang saham']
+  no_ktp_saham varchar(20)
+  alamat_saham text
+  persentase_saham varchar(50)
+  path_saham varchar(100)
+  is_saham_selamanya bool [note:'Apakah file berlaku selamanya?']
+  saham_berlaku_awal date [default: null]
+  saham_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
   custom jsonb
 }
 
 
-Table db_sidapet."ref_komisaris_perusahaan" {
-  "kode_komisaris" serial [pk]
-  "kode_vendor" int
-  "nm_komisaris" varchar
-  "jbtn_komisaris" varchar
-  "hp_komisaris" varchar
-  "no_ktp_komisaris" varchar
-  "path_ktp_komisaris" varchar
+Table ref_jenjang_pendidikan {
+  kode_jenjang_pendidikan int4 [pk]
+  jenjang_pendidikan varchar(20)
+}
+
+Table ref_tenaga_ahli {
+  kode_tenaga_ahli serial [pk]
+  kode_vendor int4
+  nama varchar(100)
+  no_ktp varchar(20)
+  file_ktp varchar(100)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+  file_ijazah varchar(100)
+  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar
+  file_cv varchar(100)
+  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar
   custom jsonb
 }
 
-Table db_sidapet."ref_pengalaman_sekarang" {
-  "kode_pengalaman_sekarang" int [pk]
-  "kode_vendor" int
-  "nm_pnglmn_sekarang" longtext
-  "div_pnglmn_sekarang" longtext
-  "ringkas_pnglmn_sekarang" longtext
-  "lok_pnglmn_sekarang" varchar
-  "pemberi_pnglmn_sekarang" varchar
-  "alamat_pnglmn_sekarang" varchar
-  "tgl_pnglmn_sekarang" varchar
-  "nilai_pnglmn_sekarang" varchar
-  "status_pnglmn_sekarang" varchar
-  "kontrak_pnglmn_sekarang" varchar
-  "prestasi_pnglmn_sekarang" varchar
-  "path_pnglmn_skrg" varchar
+Table ref_tenaga_pendukung {
+  kode_tenaga_pendukung serial [pk]
+  kode_vendor int4
+  nama varchar(100)
+  no_ktp varchar(20)
+  file_ktp varchar(100)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+  file_ijazah varchar(100)
+  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar
+  file_cv varchar(100)
+  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar
   custom jsonb
 }
 
-Table db_sidapet."ref_pengalaman3" {
-  "kode_pengalaman3" int [pk, not null, increment]
-  "kode_vendor" int
-  "nm_pnglmn_3" longtext
-  "div_pnglmn_3" longtext
-  "ringkas_pnglmn_3" longtext
-  "lok_pnglmn_3" varchar
-  "pemberi_pnglmn_3" varchar
-  "alamat_pnglmn_3" varchar
-  "tgl_pnglmn_3" varchar
-  "nilai_pnglmn_3" varchar
-  "status_pnglmn_3" varchar
-  "tgl_selesai_pnglmn_3" varchar
-  "ba_pnglmn_3" varchar
-  "path_pnglmn_3" varchar
+/*
+Table trx_sertif_pengalaman_personalia {
+  kode_sertif_dan_pengalaman serial [pk]
+  kode_personalia int4
+  jenis_dok sertif_pengalaman [note: 'sertifikasi, pengalaman']
+  nama varchar(100)
+  file_bukti varchar(100)
+
+  note: 'Menampung daftar sertifikat dan daftar pengalaman personalia badan usaha'
+}
+*/
+
+Table ref_kepemilikan {
+  kode_kepemilikan int4 [pk]
+  kepemilikan varchar(20)
+}
+
+Table ref_kantor {
+  kode_kantor serial [pk]
+  kode_vendor int
+  alamat text
+  kode_kepemilikan int4
+  file_foto varchar(100)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
   custom jsonb
 }
 
-Table db_sidapet."ref_pengalaman10" {
-  "kode_pengalaman10" int [pk, not null, increment]
-  "kode_vendor" int
-  "nm_pnglmn_10" longtext
-  "div_pnglmn_10" longtext
-  "ringkas_pnglmn_10" longtext
-  "lok_pnglmn_10" varchar
-  "pemberi_pnglmn_10" varchar
-  "alamat_pnglmn_10" varchar
-  "tgl_pnglmn_10" varchar
-  "nilai_pnglmn_10" varchar
-  "status_pnglmn_10" varchar
-  "tgl_selesai_pnglmn_10" varchar
-  "ba_pnglmn_10" varchar
-  "path_pnglmn_10" varchar
+Table ref_fasilitas_perusahaan {
+  kode_fasilitas_usaha serial [pk]
+  kode_vendor int
+  nama varchar(100)
+  jumlah varchar(50)
+  kondisi kondisi_barang [note: "baik, sedang, kurang_baik"]
+  kode_kepemilikan int4
+  file_kepemilikan varchar(100)
+  is_kepemilikan_selamanya bool [note:'Apakah kepemilikan berlaku selamanya?']
+  kepemilikan_berlaku_awal date [default: null]
+  kepemilikan_berlaku_akhir date [default: null]
+  encrypt_kepemilikan varchar(255)
+  file_foto varchar(100)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key_foto varchar(255)
   custom jsonb
 }
 
-Table db_sidapet."ref_personalia_perusahaan" {
-  "kode_personalia" int [pk]
-  "kode_vendor" int
-  "nm_personal" varchar
-  "tgl_personal" varchar
-  "pendidikan_personal" varchar
-  "jbtn_personal" varchar
-  "pengalaman_personal" varchar
-  "keahlian_personal" varchar
-  "sertif_personal" varchar
-  "path_personal" varchar
+Table ref_pengalaman_perusahaan {
+  kode_pengalaman_perusahaan serial [pk]
+  kode_vendor int
+  nama_pekerjaan varchar(100)
+  tahun_pekerjaan int4
+  pemberi_kerja varchar(100)
+  nilai_pekerjaan int4
+  jangka_waktu varchar(50)  
+  no_kontrak varchar(50)
+  file_kontrak varchar(100)
+  is_kontrak_selamanya bool [note:'Apakah kontrak berlaku selamanya?']
+  kontrak_berlaku_awal date [default: null]
+  kontrak_berlaku_akhir date [default: null]
+  encrypt_key_kontrak varchar(255)
+  file_bast varchar(100)
+  is_bast_selamanya bool [note:'Apakah bast berlaku selamanya?']
+  bast_berlaku_awal date [default: null]
+  bast_berlaku_akhir date [default: null]
+  encrypt_key_bast varchar(255)
+}
+
+Table ref_pengalaman_ta {
+  kode_pengalaman_ta serial [pk]
+  kode_tenaga_ahli int4
+  pengalaman varchar(255)
+  file_bukti varchar(100)
+  encrypt_key varchar
+
+  note: 'Daftar pengalaman tenaga ahli badan usaha'
+}
+
+Table ref_pengalaman_tp {
+  kode_pengalaman_tp serial [pk]
+  kode_tenaga_pendukung int4
+  pengalaman varchar(255)
+  file_bukti varchar(100)
+  encrypt_key varchar
+
+  note: 'Daftar pengalaman tenaga pendukung badan usaha'
+}
+
+/*
+Table ref_sertif_pengalaman_perorangan {
+  kode_sertif_dan_pengalaman serial [pk]
+  jenis_dok sertif_pengalaman
+  nama varchar(100)
+  file_bukti varchar(100)
+
+  note: 'Menampung daftar sertifikat dan daftar pengalaman personalia badan usaha'
+}
+*/
+
+
+
+Table ref_pengalaman_perorangan {
+  kode_pengalaman_perorangan serial [pk]
+  kode_vendor int4
+  nomor varchar(100)
+  nama_pekerjaan varchar(100)
+  posisi varchar(50)
+  jangka_waktu varchar(50)
+  nilai_pekerjaan int4
+  file_bukti varchar(100)
+  encrypt_key varchar
   custom jsonb
 }
 
-Table db_sidapet."ref_saham_perusahaan" {
-  "kode_saham" int [pk, not null, increment]
-  "kode_vendor" int
-  "nm_saham" varchar
-  "no_ktp_saham" varchar
-  "alamat_saham" varchar
-  "persentase_saham" varchar
-  "path_saham" varchar
+Table ref_sertif_perorangan {
+  kode_sertif_perorangan serial [pk]
+  kode_vendor int4
+  nm_sertifikat varchar(100)
+  file_bukti varchar(100)
+  path_sertif varchar
+  encrypt_key varchar
   custom jsonb
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
+Table "users" {
+  "id" serial [pk, increment]
+  "name" varchar
+  "id_level" int
+  "email" varchar(100)
+  "email_real" varchar(100)
+  "password" varchar(255)
+  "is_ppk" int
+  "is_pp" int
+  "is_pkualitas" int
+  "is_tutor" varchar(1)
+  "undang" int
+  "internasional" int
+  "remember_token" varchar(100)
+  "created_at" timestamp
+  "updated_at" timestamp
+  "email_verified_at" timestamp
+  "andro_user" varchar(255)
+  "andro_password" varchar(255)
+}
 
-Ref: "db_sidapet"."trx_paket"."kode_paket" <> "db_sidapet"."trx_penjaringan"."kode_paket"
-Ref: "db_sidapet"."trx_penjaringan"."kode_penjaringan" < "db_sidapet"."trx_undangan_penjr"."kode_penjaringan"
-Ref: "db_sidapet"."trx_penjaringan"."kode_penjaringan" < "db_sidapet"."trx_verifikator_penjr"."kode_penjaringan"
-Ref: "db_sidapet"."trx_penjaringan"."kode_penjaringan" < "db_sidapet"."trx_vendor_penjr"."kode_penjaringan"
-Ref: "db_sidapet"."ref_jenis_pengadaan"."kode_jenis_pengadaan" < "db_sidapet"."trx_paket"."kode_jenis_pengadaan"
-Ref: "db_sidapet"."trx_vendor_penjr"."kode_vendor_penjr" < "db_sidapet"."trx_eval_vendor"."kode_vendor_penjr"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < "db_sidapet"."trx_vendor_penjr"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < "db_sidapet"."ref_direksi_perusahaan"."kode_vendor"
-Ref: "db_sidapet"."trx_paket"."kode_paket" < "public"."trx_ketentuan_umum_khusus"."kode_paket"
-Ref: "db_sidapet"."ref_kategori_item"."kode_kategori_item" < "db_sidapet"."ref_item_tanya"."kode_kategori_item"
-Ref: "db_sidapet"."ref_item_tanya"."kode_item" < "db_sidapet"."trx_paket_item"."kode_item"
-Ref: "db_sidapet"."ref_item_tanya"."kode_item" < "db_sidapet"."trx_jawab_profil"."kode_item"
-Ref: "db_sidapet"."trx_paket_item"."kode_trx_paket_item" < "db_sidapet"."trx_jawab_item"."kode_trx_paket_item"
-Ref: "db_sidapet"."trx_paket"."kode_paket" < "db_sidapet"."trx_paket_item"."kode_paket"
-Ref: "db_sidapet"."ref_kategori_belanja"."kode_kategori_belanja" < "db_sidapet"."trx_paket"."kode_kategori_belanja"
-Ref: "db_sidapet"."ref_cabang_ut"."kode_cabang_ut" < "db_sidapet"."trx_paket"."kode_cabang_ut"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < "db_sidapet"."trx_jawab_item"."kode_vendor"
-Ref: "db_sidapet"."ref_jenis_vendor"."kode_jenis_vendor" < "db_sidapet"."ref_vendor_register"."kode_jenis_vendor"
-Ref: "db_sidapet"."ref_jenis_vendor"."kode_jenis_vendor" < "db_sidapet"."ref_vendor"."kode_jenis_vendor"
-Ref: "db_sidapet"."ref_domisili"."kode_domisili" < "db_sidapet"."ref_vendor"."kode_domisili"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < "db_sidapet"."ref_pengalaman_perorangan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_sertif_perorangan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_ijin_usaha_perusahaan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_akta_perusahaan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_fasilitas_perusahaan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_pengalaman3"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_pengalaman10"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_komisaris_perusahaan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_personalia_perusahaan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_pengalaman_sekarang"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < db_sidapet."ref_saham_perusahaan"."kode_vendor"
-Ref: "db_sidapet"."ref_vendor"."kode_vendor" < "db_sidapet"."komen_verif"."kode_vendor"
-Ref: "db_sidapet"."ref_kategori_item"."kode_kategori_item" < "db_sidapet"."komen_verif"."kode_kategori_item"
-Ref: "db_sidapet"."trx_eval_vendor"."kode_eval_vendor" < "db_sidapet"."trx_penilaian"."kode_eval_vendor"
-Ref: "db_sidapet"."ref_item_penilaian"."kode_item_penilaian" < "db_sidapet"."trx_penilaian"."kode_item_penilaian"
-Ref: "db_sidapet"."ref_kelompok_item_penilaian"."kode_kelompok_item_penilaian" < "db_sidapet"."ref_item_penilaian"."kode_kelompok_item_penilaian"
+Table ref_kbli {
+  kode_kbli serial [pk]
+  kategori varchar(2)
+  gol_pokok int2
+  gol int4
+  sub_gol int4
+  kelompok int4
+  judul varchar
+}
 
+
+// ---------------------------------
+// Penilaian
+// ---------------------------------
+
+Table trx_nilai_per_kat_dok_v {
+  kode_nilai_per_kat_dok_v serial [pk]
+  verifikator varchar(80) [note: "email user verifikator"]
+  kode_kat_dokumen_vendor int4
+  is_ada_komentar bool
+  teks_komentar text
+  nilai varchar(50)
+
+  note: "Untuk menyimpan penilaian per kategori vendor per verifikator"
+}
+
+Table trx_nilai_per_item_tanya {
+  kode_nilai_per_per_item_tanya serial [pk]
+  kode_nilai_per_kat_dok_v int4
+  kode_item int4
+  is_ada_komentar bool
+  teks_komentar text
+  nilai varchar(50)
+
+  note: "Untuk menyimpan penilaian per item tanya dari vendor per verifikator"
+}
+
+
+
+
+Ref: "trx_kategori"."kode_trx_kategori" < "trx_penjaringan"."kode_trx_kategori"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_undangan_penjr"."kode_penjaringan"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_verifikator_penjr"."kode_penjaringan"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_vendor_penjr"."kode_penjaringan"
+Ref: "ref_jenis_pengadaan"."kode_jenis_pengadaan" < "trx_kategori"."kode_jenis_pengadaan"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_eval_vendor"."kode_vendor_penjr"
+Ref: "ref_vendor"."kode_vendor" < "trx_vendor_penjr"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_direksi_perusahaan"."kode_vendor"
+Ref: "trx_kategori"."kode_trx_kategori" < "trx_ketentuan_umum_khusus"."kode_trx_kategori"
+Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya"."kode_kat_item_tanya"
+Ref: "ref_item_tanya"."kode_item" < "trx_jawab_profil"."kode_item"
+Ref: "ref_cabang_ut"."kode_cabang_ut" < "trx_penjaringan"."kode_cabang_ut"
+Ref: "ref_vendor"."kode_vendor" < "trx_jawab_item"."kode_vendor"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_vendor_register"."kode_jenis_vendor"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_vendor"."kode_jenis_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_perorangan"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_sertif_perorangan"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_fasilitas_perusahaan"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_komisaris_perusahaan"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_saham_perusahaan"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "trx_komen_verif"."kode_vendor"
+Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "trx_komen_verif"."kode_kat_item_tanya"
+Ref: "trx_eval_vendor"."kode_eval_vendor" < "trx_penilaian"."kode_eval_vendor"
+Ref: "ref_item_penilaian"."kode_item_penilaian" < "trx_penilaian"."kode_item_penilaian"
+Ref: "ref_kelompok_item_penilaian"."kode_kelompok_item_penilaian" < "ref_item_penilaian"."kode_kelompok_item_penilaian"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_kat_dokumen_vendor"."kode_jenis_vendor"
+Ref: "ref_kat_dokumen_vendor"."kode_kat_dokumen_vendor" < "ref_kat_item_tanya"."kode_kat_dokumen_vendor"
+Ref: "ref_kat_dokumen_vendor"."kode_kat_dokumen_vendor" < "trx_kat_dok_komplit"."kode_kat_dokumen_vendor"
+Ref: "ref_vendor"."kode_vendor" < "trx_kat_dok_komplit"."kode_vendor"
+Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya"."tipe_input"
+Ref: "ref_item_tanya"."kode_item" < "trx_jawab_item"."kode_item"
+Ref: "trx_kategori"."kode_trx_kategori" < "trx_jawab_item"."kode_trx_kategori"
+Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "trx_ketentuan_umum_khusus"."kode_kat_item_tanya"
+Ref: "trx_kategori"."kode_trx_kategori" < "trx_kat_j_vendor"."kode_trx_kategori"
+
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "trx_kat_j_vendor"."kode_jenis_vendor"
+
+
+
+
+
+Ref: "trx_kategori"."kode_trx_kategori" < "ref_item_tanya"."kode_trx_kategori"
+
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_vendor_reg_history"."kode_jenis_vendor"
+
+// Ref: "ref_kat_dokumen_vendor"."kode_kat_dokumen_vendor" < "ref_item_tanya"."kode_kat_dokumen_vendor"
+
+// Ref: "ref_personalia"."kode_personalia" < "trx_sertif_pengalaman_personalia"."kode_personalia"
+
+Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_kantor"."kode_kepemilikan"
+
+Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_fasilitas_perusahaan"."kode_kepemilikan"
+
+// Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_personalia"."kode_jenjang_pendidikan"
+
+Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_tenaga_ahli"."kode_jenjang_pendidikan"
+
+
+
+Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_tenaga_pendukung"."kode_jenjang_pendidikan"
+
+Ref: "ref_step_verif_memproses_pjr"."kode_step" < "trx_step_komplit_verif_memproses_pjr"."kode_step"
+
+Ref: "ref_tenaga_ahli"."kode_tenaga_ahli" < "ref_pengalaman_ta"."kode_tenaga_ahli"
+Ref: "ref_tenaga_pendukung"."kode_tenaga_pendukung" < "ref_pengalaman_tp"."kode_tenaga_pendukung"
+
+Ref: "ref_kat_dokumen_vendor"."kode_kat_dokumen_vendor" < "ref_item_tanya"."kode_kat_dokumen_vendor"
+
+  
+
+Ref: "ref_item_tanya"."kode_item" < "ref_item_tanya_table_ci"."kode_item"
+
+Ref: "trx_kategori"."kode_trx_kategori" < "ref_item_tanya_table_ci"."kode_trx_kategori"
+
+Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_tim_teknis_pendukung"."kode_undangan_verif"
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_undangan_verif"."kode_vendor_penjr"
+
+Ref: "ref_vendor"."kode_vendor" < "ref_izin_usaha"."kode_vendor"
+
+Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_ahli"."kode_vendor"
+
+Ref: "ref_vendor"."kode_vendor" < "ref_sertifikat_usaha"."kode_vendor"
+
+Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_pendukung"."kode_vendor"
+
+Ref: "ref_vendor"."kode_vendor" < "ref_kantor"."kode_vendor"
+
+Ref: "trx_nilai_per_kat_dok_v"."kode_nilai_per_kat_dok_v" < "trx_nilai_per_item_tanya"."kode_nilai_per_kat_dok_v"
